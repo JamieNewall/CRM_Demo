@@ -3,12 +3,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const BrowserSync = require('browser-sync-webpack-plugin');
 
 
 module.exports = {
   entry: {
-    index: './src/index.js',
-    about: './src/about.js',
+    add: './src/js/add.js',
+    auth: './src/js/auth.js',
+    summary: './src/js/summary.js',
+    opp: './src/js/opp.js'
     
   },
   mode: 'development',
@@ -18,22 +21,38 @@ module.exports = {
     publicPath: '../'
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src', 'index.html'),
-      filename: 'html/index.html',
-      chunks: ['index']}),
+      template: path.resolve(__dirname, 'src','html', 'add.html'),
+      filename: 'html/add.html',
+      chunks: ['add']}),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src', 'about.html'),
-      filename: 'html/about.html',
-      chunks: ['about']}),
+      template: path.resolve(__dirname, 'src','html', 'auth.html'),
+      filename: 'html/auth.html',
+      chunks: ['auth']}),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src','html', 'summary.html'),
+      filename: 'html/summary.html',
+      chunks: ['summary']}),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src','html', 'opp.html'),
+      filename: 'html/opp.html',
+      chunks: ['opp']}),
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
       chunkFilename: '[id].css'      
     }),
+      new BrowserSync({
+        host: 'localhost',
+        port: '63342',
+
+        files: ['./dist/*.html'],
+        proxy: 'http://localhost:63342/Praetura_Pipeline_App_V3/dist/html/'
+      })
     
-    new CleanWebpackPlugin()
+
   ],
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
   module: {
     rules: [
       {
