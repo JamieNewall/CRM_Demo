@@ -4,7 +4,7 @@ const excel = require('xlsx');
 
 
 const data = require('../../util/getExcel.js');
-console.log(data);
+// console.log(data);
 
 class dbController {
     constructor() {

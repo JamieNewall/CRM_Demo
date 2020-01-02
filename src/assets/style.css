@@ -327,6 +327,7 @@
 }
 
 /* Summary Page CSS */
+
 .table-container {
   width: 80%;
   margin: 0 auto 0 auto;
@@ -336,14 +337,44 @@
 
 .filter-container{
   width: 80%;
-  height: 5rem;
-  margin: 0 auto 0 auto;
-  margin-top: 4rem;
+  
+  margin: auto;
+ 
   /* background-color: lightblue; */
-  margin-bottom: 2rem;
+  
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  margin-bottom: 1rem;
+}
+
+.search-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+}
+
+.select-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly; 
+
+}
+
+.filter-title{
+  margin: auto;
+  width: 80%;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.select-dropdown {
+  width: 20%;
 }
 
 .filter-container > p {
