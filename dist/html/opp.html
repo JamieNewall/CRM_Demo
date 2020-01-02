@@ -6,17 +6,33 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Opportunity</title>
 <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
-
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 <link href="../css/opp.css" rel="stylesheet"></head>
-<body>
+<body id="bootstrap-override">
 
   <!-- Navbar -->
   <nav class="nav">
     <div id="navbar-container">
+      <div class="mobile-menu-container">
+        <div id="mobile-menu">
+          <div class="mobile-menu-line" id="bottom-line"></div>
+          <div class="mobile-menu-line" id="middle-line"></div>
+          <div class="mobile-menu-line" id="top-line"></div>
+
+
+        <div class="mobile-menu-dropdown">
+          <ul>
+            <li class="mobile-menu-item"><div class="mobile-link-wrapper"><a href=""><i class="fas fa-plus fa-sm"></i>&nbsp;Add Opportunity</a></div></li>
+
+            <li class="mobile-menu-item"><div class="mobile-link-wrapper"><a href="">View All Opportunties</a></div></li>
+          </ul>
+        </div>
+        </div>
+      </div>
         <img id="navbar-logo" src="[object Module]" alt="">
       <ul id="navbar-links-container">
-        <li class="navbar-links"><a href=""><i class="fas fa-plus fa-sm"></i> <span> &nbsp;Add Opportunity</a></li>
+        <li class="navbar-links"><a href=""><i class="fas fa-plus fa-sm"></i>&nbsp; <span> Add Opportunity</span></a></li>
         <li class="navbar-links"><a href="">View All Opportunties</a></li>
       </ul>
     </div>      
@@ -58,64 +74,10 @@
 <!-- Form Fields -->
 
 <div class="form-controls">
-  <div id="Stage-1-Fields" class="field-set">
-    <div class="input-field form-input">
-      <input placeholder="Opportunity Name..." id="opp-name" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-    <div class="input-field form-input">
-      <input disabled value="I am not editable" placeholder="Opportunity Name..." id="opp-location" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-    <div class="input-field form-input">
-      <input placeholder="Opportunity Name..." id="opp-location" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-    <div class="input-field form-input">
-      <input placeholder="Opportunity Name..." id="opp-location" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-    <div class="input-field form-input">
-      <input placeholder="Opportunity Name..." id="opp-location" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-    <div class="input-field form-input">
-      <input placeholder="Opportunity Name..." id="opp-location" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-  </div>
-
-
-<!-- Stage 2 -->
-<div id="Stage-2-Fields" class="field-set">
-    <div class="input-field form-input">
-      <input placeholder="stage 2..." id="opp-name" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-    <div class="input-field form-input">
-      <input disabled value="stage 2" placeholder="stage 2..." id="opp-location" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-</div>
-
-<!-- Stage 3 -->
-<div id="Stage-3-Fields" class="field-set">
-    <div class="input-field form-input">
-      <input placeholder="stage 3..." id="opp-name" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-    <div class="input-field form-input">
-      <input disabled value="stage 3" placeholder="stage 3..." id="opp-location" type="text" class="validate">
-      <label for="first_name">Name</label>
-    </div>
-</div>
 
 
 
 
-
-
-<!-- End of form controls -->
 </div>
 
 <!-- Footer -->
@@ -126,9 +88,9 @@
   </div>
 
 </footer>
- 
 
-
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!--      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
   <script src="https://kit.fontawesome.com/e4a259c7ac.js" crossorigin="anonymous"></script>
 

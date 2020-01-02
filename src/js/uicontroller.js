@@ -16,15 +16,19 @@ class UIController {
     // Add circles
     let html = '';
     let i;   
-    for ( i = 1 ; i <= stage; i++) {
+    for ( i = 0 ; i <= stage; i++) {
       
       html += `<div class="pv-circle"> 
       <span class="node-number" id="circle-${i}">${i}</span>    
       </div>`
     }
+
+
     
 
     container.innerHTML = html;
+    let selector = `#circle-${stage}`;
+    document.querySelector(selector).parentNode.style.background = '#008cf0';
 
     // Color Circles
     let circles = document.querySelectorAll('pv-circle');
@@ -39,7 +43,7 @@ class UIController {
     
     let fields = document.querySelectorAll('.field-set');
     fields.forEach((field) => {
-      if (field.id === `Stage-${stage}-Fields`) {
+      if (field.id === `stage-${stage}-fields`) {
         field.style.display = "grid";
       } else {
         field.style.display = 'none';
@@ -62,7 +66,8 @@ class UIController {
         
     fieldSets.forEach((field, index) => {
       // console.log(field.id,index);
-      if (field.id === `Stage-${stage}-Fields`) {
+      if(stage === 0){stage = 1}
+      if (field.id === `stage-${stage}-fields`) {
         field.style.display = "grid";
       } else {
         field.style.display = 'none';
@@ -92,11 +97,30 @@ class UIController {
           stage = e.target.children[0].innerHTML;
           
         }
-        console.log('function runs');
+
         this.setFields(stage);
       });
     });
+    let mobileMenu = document.querySelector('#mobile-menu');
+    mobileMenu.addEventListener('click', this.toggleMobileMenu)
+    // mobileMenu.addEventListener("mouseover", this.mobileMenuAnimation)
   }
+
+  static toggleMobileMenu() {
+    let mobileMenu = document.querySelector('.mobile-menu-dropdown');
+    console.log('running')
+    if (mobileMenu.style.display === "none") {
+      mobileMenu.style.display = "block";
+    } else {
+      mobileMenu.style.display = "none"
+    }
+  }
+
+  // static mobileMenuAnimation() {
+  //   let mobileMenu = document.querySelector('#mobile-menu');
+  //   console.log(mobileMenu.childNodes);
+  //
+  // }
           
    
   

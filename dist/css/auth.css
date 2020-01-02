@@ -12,9 +12,129 @@
   
   }
 
-  body {
-    min-width: 100vw;
+  #mobile-menu{
+    width: 35px;
+    height: 35px;
+    position: absolute;
+
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 5px;
+    display: none;
+
+
+
   }
+
+  #bootstrap-override .mobile-menu-container {
+    position: absolute;
+    left: 2rem;
+    top: 25%;
+  }
+
+
+
+  #mobile-menu .mobile-menu-line {
+    width: 80%;
+    position: relative;
+    background-color: #fff;
+    height: 2px;
+    display: none;
+
+  }
+
+#mobile-menu .mobile-menu-line {
+  transition: transform 1s ease;
+}
+
+
+
+#mobile-menu:hover .mobile-menu-line {
+  transform: rotate(90deg);
+}
+
+
+
+  .mobile-menu-dropdown {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 350px;
+    background: lightgray;
+    display: none;
+
+
+    z-index: 2;
+
+
+
+  }
+
+.mobile-menu-dropdown ul {
+  margin: 0;
+}
+
+
+
+
+
+
+#bootstrap-override .mobile-menu-item {
+  overflow: hidden;
+  margin: auto;
+  display: flex;
+
+  width: 350px;
+  align-items: center;
+
+}
+
+#bootstrap-override .mobile-menu-item .mobile-link-wrapper > a {
+  width: 350px;
+  text-decoration: none;
+  color: black;
+
+
+  display: block;
+
+
+}
+
+
+
+#bootstrap-override body {
+    min-width: 100vw;
+    min-height: 100vh;
+
+  }
+
+  #bootstrap-override li {
+    list-style: none;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    padding: 5px;
+  }
+
+/*#bootstrap-override a{*/
+/*  height: 100%;*/
+/*  width: 100%;*/
+/*  align-self: center;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*}*/
+
+#bootstrap-override .navbar-links {
+  padding: 0 20px 0 20px;
+
+}
+
+#bootstrap-override li:hover{
+  background-color: rgba(0,0,0,0.1);
+}
 
 .nav , .nav-bar{
   width: 100%;
@@ -25,10 +145,13 @@
   text-decoration: none;
 }
 
-#navbar-container{
+#bootstrap-override #navbar-container{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  min-width: 100vw;
+  height: 64px;
 }
 
 #auth-navbar-container {
@@ -40,10 +163,23 @@
   min-width: 100vw !important;
 }
 
-#navbar-links-container{
+#bootstrap-override #navbar-links-container{
   height: 64px;
-  justify-self: flex-end;
+  margin-right: 2rem;
   overflow: hidden;
+  color: #fff;
+  display: flex;
+
+}
+
+#bootstrap-override #navbar-links-container > li > a,
+#bootstrap-override #navbar-links-container > li > a:visited,
+#bootstrap-override #navbar-links-container > li > a:hover,
+#bootstrap-override #navbar-links-container > li > a:active{
+  color: #fff;
+  text-decoration: none;
+
+
 }
 
 #navbar-logo {
@@ -53,6 +189,22 @@
   margin-left: 1rem;
   
   
+}
+
+#bootstrap-override .navbar-links, .navbar-links:hover{
+  text-decoration: none !important;
+  color: #fff;
+
+
+}
+
+#bootstrap-override #navbar-links-container {
+  height: 100%;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 30%;
 }
 
 #auth-navbar-logo {
@@ -65,7 +217,7 @@
 }
 
 .navbar-links:hover {
-  background-color: rgba(0,0,0,0.1);
+
   overflow: hidden;
 }
 
@@ -75,6 +227,7 @@
   /* background-color: grey; */
   width: 80%;
   margin: auto;
+  margin-top: 3rem;
   
   display: grid;
   /* grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); */
@@ -133,33 +286,38 @@
 
 /* Form Fields */
 
-.field-set{
+#bootstrap-override .form-controls{
   /* background-color: #008cf0; */
   width: 80%;
+  min-height: 500px;
   margin: 0 auto 0 auto;
-  display: none;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(1,1fr);
   justify-items: center;
   
 }
 
-.form-input {
-  width: 50%;
+.form-group {
+  width: 75%;
+  justify-self: center;
+}
+
+.field-set {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 3rem;
 }
 
 
 
 /* Footer */
 
-.footer {
+#bootstrap-override .footer {
   width: 100%;
   height: 7%;
   background-color: #555555;
-  position: fixed;
-  bottom: 0px;
-  top: 90%;
-  left: 0px;
-  right: 0px;
+
+  bottom: 0;
+
 }
 
 .footer-content {
@@ -236,7 +394,37 @@ select #filter-input {
 
 
 /* media queries */
-@media(max-width: 800px) {
+@media(max-width: 1078px) {
+
+  /*Auth page*/
+  #bootstrap-override #navbar-container {
+
+  }
+
+  #bootstrap-override #navbar-container .navbar-links,
+  #bootstrap-override #navbar-container .navbar-links:hover{
+    text-align: center;
+    overflow: hidden;
+
+  }
+
+  #bootstrap-override #navbar-container .navbar-links > span,
+  #bootstrap-override #navbar-container .navbar-links > a,
+  #bootstrap-override #navbar-container .navbar-links
+  {
+    min-width: 130px;
+    padding: 5px;
+
+
+  }
+
+  #bootstrap-override #navbar-container .navbar-links{
+    justify-content: flex-start;
+  }
+
+
+
+
   .input-wrapper {
     width: 100px;
     
@@ -248,7 +436,74 @@ select #filter-input {
   }
 
 }
+
+@media(max-width: 1277px) {
+  #bootstrap-override #navbar-container .navbar-links{
+    text-align: center;
+  }
+}
+
+@media(max-width: 800px) {
+  #bootstrap-override #navbar-container {
+    justify-content: space-evenly;
+    position: relative;
+  }
+
+  #bootstrap-override #navbar-container .navbar-links,
+  #bootstrap-override #navbar-container .navbar-links:hover{
+    width: 0px;
+    display: none;
+
+
+  }
+
+  #mobile-menu {
+    left: 0;
+    display: flex;
+    padding: 5px;
+  }
+
+  #mobile-menu .mobile-menu-line{
+    display: block;
+  }
+
+  .mobile-menu-item > a{
+    color: black;
+    position: relative;
+    top: 100%;
+    left: 50%;
+  }
+
+  #mobile-menu:active{
+    box-shadow: 0 2px 0 black;
+
+  }
+
+
+
+  /*#bootstrap-override #navbar-container .navbar-links > a {*/
+  /*  width: 0px;*/
+  /*  font-size: 0.5px;*/
+  /*}*/
+
+  #bootstrap-override #navbar-container #navbar-links-container{
+    position: absolute;
+    right: 100%;
+    justify-content: center;
+  }
+
+  #bootstrap-override #navbar-container .navbar-links > a > span {
+    width: 0px
+  }
+
+
+}
+
 @media (max-width: 568px) {
+
+    .field-set{
+      grid-template-columns: 1fr;
+    }
 
     .flex-wrapper{
       margin-top: 0;
@@ -301,17 +556,16 @@ select #filter-input {
    .navbar-links > a{
        color: #fff;  
        margin: 0;
-       padding: 0;  
+       padding: 0;
+      text-decoration: none;
   }
 
   .navbar-links {
     margin-right: 10px;
+    text-decoration: none;
 
   }
 
-  .form-controls{
-    grid-template-columns: repeat(1,1fr);
-  }
 
 
 }
