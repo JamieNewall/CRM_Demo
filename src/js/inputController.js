@@ -11,6 +11,7 @@ const investmentTeam = ["Andy Round","Ben Hatton","David Foreman","Guy Weaver","
 const venturePartners = ["VP1","VP2","VP3"];
 const leadSource = ["Advisor Community", "HNW Investors / Venture Partner", "Inbound/Website Applications","Industry Events",
 "Key Hubs / Accelerators", "Linkedin Cold Approach","Other VC / PE Intro","Personal Network (inc. Linkedin)","Portfolio Businesses"];
+const ICDecision = ['Approved','Monitor','Rejected'];
 //TODO need to update these and VP array
 const sectors = ["Sector 1","Sector 2"];
 const investmentStage = ["Seed", "Early VC"];
@@ -33,7 +34,11 @@ const inputList = [{0:{one_OppName:"STRING"}},{1:{one_OppName:"STRING",
         five_MddExternalProviderEngaged:"RADIO",five_MddProvider:"STRING",five_MddFee:"INTEGER",five_MgtReferencesDone:"RADIO",
         five_MddSummary:"TEXTAREA",five_KycConfirmedSignificantHolders:"RADIO",five_KycDateCompleted:"DATEONLY",five_EisReviewed:"RADIO",
         five_EisAdvisor:EisExperts,five_EisSubmissionDate:"DATEONLY",five_DealSummaryDone:"RADIO",five_DdReviewed:"RADIO",
-        five_DdReviewer:investmentDirectors,five_DdReviewDate:"DATEONLY"}}]
+        five_DdReviewer:investmentDirectors,five_DdReviewDate:"DATEONLY"}},{6:{six_DateFinalIc:"DATEONLY",six_InvestmentAmount:"INTEGER",six_Premoney:"INTEGER",six_TotalRound:"INTEGER",
+        six_EquityFinal:"FLOAT",six_PriorReturn:"RADIO",six_CommitteeDecision:ICDecision,six_DecisionSupport:"MULTILINE"}},{7:{seven_EisAssuranceReceived:"RADIO",seven_DateEisReceived:"DATEONLY",seven_PortfolioIntroduced:"RADIO",
+        seven_PrDone:"RADIO",seven_ReviewedManagementAccs:"RADIO",seven_FinalLegalBible:"RADIO",seven_AgreedBoard:"RADIO",
+        seven_SummarySent:"RADIO"}},{8:{eight_CompletionDate:"DATEONLY",eight_EisOneSentDate:"DATEONLY",eight_EisThreeReceivedDate:"DATEONLY",
+        eight_EisFiveSentDate:"DATEONLY",eight_EisFiveReceivedDate:"DATEONLY",eight_UploadedEisToPortal:"RADIO"}}]
 
 
 //Labels for fields
@@ -82,7 +87,14 @@ const fieldNameMapping = {
     five_MddExternalProviderEngaged:"MDD External Provider Engaged?",five_MddProvider:"MDD Provider",five_MddFee:"MDD Fee",five_MgtReferencesDone:"Have We Referenced Management?",
     five_MddSummary:"MDD Summary",five_KycConfirmedSignificantHolders:"KYC Confirmed on Shareholders with 10%+ Holding?",five_KycDateCompleted:"Date KYC Completed",five_EisReviewed:"Has The EIS AA been Completed and Reviewed?",
     five_EisAdvisor:"Reviewed By",five_EisSubmissionDate:"Date EIS AA Submitted",five_DealSummaryDone:"Deal 2 Page Summary Ready?",five_DdReviewed:"DD and Legals Reviewed For Completeness?",
-    five_DdReviewer:"DD Internal Reviewer",five_DdReviewDate:"Date DD Review Conducted"
+    five_DdReviewer:"DD Internal Reviewer",five_DdReviewDate:"Date DD Review Conducted", six_DateFinalIc:"Date of Final IC",six_InvestmentAmount:"PV Investment",six_Premoney:"Premoney Valuation",six_TotalRound:"Total Round",
+    six_EquityFinal:"PV Equity %",six_PriorReturn:"Do We Have a Prior Return?",six_CommitteeDecision:"Investment Committee Decision",six_DecisionSupport:"IC Rationale",
+    seven_EisAssuranceReceived:"Have We Received EIS AA?",seven_DateEisReceived:"Date AA Received",seven_PortfolioIntroduced:"Has We Introduced the Portfolio Team?",
+    seven_PrDone:"Have We Arranged PR With Marketing?",seven_ReviewedManagementAccs:"Have We Reviewed The Latest Management Accounts?",seven_FinalLegalBible:"Have We Received and Saved Final Legal Bible?",seven_AgreedBoard:"Have We Agreed Who Will Take The Observer and ID Board Seat?",
+    seven_SummarySent:"Have We Sent The Completion Memo to Marketing?", eight_CompletionDate: "Date Deal Completed",
+    eight_EisOneSentDate: "Date EIS 1 Sent", eight_EisThreeReceivedDate: "Date EIS 3 Received",
+    eight_EisFiveSentDate: "Date EIS 5 Sent", eight_EisFiveReceivedDate: "Date EIS 5 Received",
+    eight_UploadedEisToPortal: "Have We Uploaded EIS Certificates to Investor Portal?"
 }
 
 //TODO need validation for mandatory fields
