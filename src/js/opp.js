@@ -17,6 +17,7 @@ import uicontroller from "./uicontroller";
 
 document.querySelector('#navbar-logo').src = image;
 inputController.generateHtmlInputs(inputList);
+inputController.generateStageEightAllocationTable();
 //TODO need to take note of the stage before init here
 UIController.setLoadState(8);
 UIController.setFields(8);
