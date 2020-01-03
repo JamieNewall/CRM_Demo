@@ -18,7 +18,7 @@ import uicontroller from "./uicontroller";
 document.querySelector('#navbar-logo').src = image;
 inputController.generateHtmlInputs(inputList);
 //TODO need to take note of the stage before init here
-UIController.setLoadState(2);
-UIController.setFields(2);
+UIController.setLoadState(8);
+UIController.setFields(8);
 UIController.loadEventListeners();
 

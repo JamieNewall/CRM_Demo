@@ -79,7 +79,24 @@ class UIController {
       
     }
 
-  
+  static radioButtonState(e) {
+
+
+    let targetId = e.target.id;
+    let siblingId = "";
+    if(targetId.includes("yes")) {
+      siblingId = targetId.replace("yes","no");
+    } else {
+      siblingId = targetId.replace("no","yes");
+    }
+    document.getElementById(siblingId).removeAttribute("checked");
+    document.getElementById(siblingId).checked = false;
+    document.getElementById(targetId).setAttribute("checked","checked");
+
+  }
+
+
+
   static loadEventListeners() {
     let circles = document.querySelectorAll('.pv-circle');
     circles.forEach(circle => {
@@ -103,6 +120,10 @@ class UIController {
     });
     let mobileMenu = document.querySelector('#mobile-menu');
     mobileMenu.addEventListener('click', this.toggleMobileMenu)
+    let radioBtns = document.querySelectorAll('.form-check-input');
+    radioBtns.forEach((btn) => {
+      btn.addEventListener('click',this.radioButtonState)
+    })
     // mobileMenu.addEventListener("mouseover", this.mobileMenuAnimation)
   }
 
