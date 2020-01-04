@@ -93,8 +93,9 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("\n\n//# sourceURL=webpack:///./src/js/add.js?");
+
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=add.bundle.js.map

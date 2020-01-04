@@ -22,4 +22,7 @@ inputController.generateStageEightAllocationTable();
 UIController.setLoadState(8);
 UIController.setFields(8);
 UIController.loadEventListeners();
+document.getElementById('add-opp').addEventListener('click', () => {
+    fetch('/request').then(data => console.log(data)).catch(() => console.log('Something went wrong'))
+})
 

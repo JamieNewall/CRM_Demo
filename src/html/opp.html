@@ -23,7 +23,7 @@
 
         <div class="mobile-menu-dropdown">
           <ul>
-            <li class="mobile-menu-item"><div class="mobile-link-wrapper"><a href=""><i class="fas fa-plus fa-sm"></i>&nbsp;Add Opportunity</a></div></li>
+            <li class="mobile-menu-item" id="add-opp"><div class="mobile-link-wrapper"><a href=""><i class="fas fa-plus fa-sm"></i>&nbsp;Add Opportunity</a></div></li>
 
             <li class="mobile-menu-item"><div class="mobile-link-wrapper"><a href="">View All Opportunties</a></div></li>
           </ul>
@@ -42,35 +42,32 @@
 
     <div class="section">
       <div class="grid-container">
-        <!-- <div class="pv-circle"> 
-          <span class="node-number">1</span>
-          
-        </div>     
-        
-        <div class="pv-circle">
-          <span class="node-number">2</span>
-          
-        </div>
-        <div class="pv-circle">
-          <span class="node-number">3</span>
-        </div>
-        <div class="pv-circle">
-          <span class="node-number">4</span>
-        </div>
-        <div class="pv-circle">
-          <span class="node-number">5</span>
-        </div>
-        <div class="pv-circle">
-          <span class="node-number">6</span>
-        </div> 
-        <div class="pv-circle">
-          <span class="node-number">7</span>
-        </div>
-        <div class="pv-circle">
-          <span class="node-number">8</span>
-        </div> -->
+
       </div>
     </div>
+
+  <div class="button-section">
+  <div class="button-container">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Change Status
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">
+        <button type="button" class="btn" data-toggle="modal" data-target="#proceed-modal">
+          Proceed to Next stage
+        </button></a>
+        <a class="dropdown-item" href="#"><button type="button" class="btn" data-toggle="modal" data-target="#monitor-modal">
+          Monitor Opportunity
+          </button></a>
+        <a class="dropdown-item" href="#"><button type="button" class="btn" data-toggle="modal" data-target="#decline-modal">
+          Decline Opportunity
+        </button></a>
+      </div>
+    </div>
+
+  </div>
+  </div>
 <!-- Form Fields -->
 
 <div class="form-controls">
@@ -80,12 +77,156 @@
 
 </div>
 
-<!-- Footer -->
+
+
+  <div class="modal-container">
+<!--  Progress to next stage modal-->
+    <div class="modal fade" id="proceed-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Move to next stage?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Click Yes to progess the opportunity to the next stage.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Yes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--  Monitor modal  -->
+    <div class="modal fade" id="monitor-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" >Move to Monitor?</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="">
+              <div class="form-group">
+                <label for="monitor_Dropdown">Reason:</label>
+                <select class="form-control" id="monitor_Dropdown">
+                  <option value=""></option>
+                  <option value="too small/early">Too small/early</option>
+                  <option value="location">Location</option>
+                  <option value="management">Management</option>
+                  <option value="investment amount">Investment Amount</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="monitor_Notes">Notes:</label>
+                <textarea class="form-control" id="monitor_Notes" rows="4"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="monitor_FollowupDate">Followup Date:</label>
+                <input class="datepicker-ui validate form-control" id="monitor_FollowupDate"/>
+
+              </div>
+
+
+
+
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Yes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!--  Decline Modal  -->
+    <div class="modal fade" id="decline-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" >Are you sure you want to decline?</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="">
+              <div class="form-group">
+                <label for="decline_Dropdown">Decline Reason:</label>
+                <select class="form-control" id="decline_Dropdown">
+                  <option value=""></option>
+                  <option value="too small/early">Too small/early</option>
+                  <option value="location">Location</option>
+                  <option value="management">Management</option>
+                  <option value="investment amount">Investment Amount</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="decline_Rationale">Decline Rationale:</label>
+                <textarea class="form-control" id="decline_Rationale" rows="4"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="decline_PersonCancelling">Person Cancelling:</label>
+                <select class="form-control" id="decline_PersonCancelling">
+                  <option value=""></option>
+                  <option value="Andy Round">Andy Round</option>
+                  <option value="Guy Weaver">Guy Weaver</option>
+                  <option value="Jamie Newall">Jamie Newall</option>
+                  <option value="Louise Chapman">Louise Chapman</option>
+                  <option value="Mark Lyons">Mark Lyons</option>
+                  <option value="Myrto Lalacos">Myrto Lalacos</option>
+                  <option value="Pete Carway">Pete Carway</option>
+                  <option value="Sim Landa">Sim Landa</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Have you told the founders?</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="decline_ToldFounders-yes" id="decline_ToldFounders-yes" value="TRUE">
+                  <label class="form-check-label" for="decline_ToldFounders-yes">
+                    Yes
+                  </label></div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="decline_ToldFounders-no" id="decline_ToldFounders-no" value="FALSE">
+                  <label class="form-check-label" for="decline_ToldFounders-no">
+                    No
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Yes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
 
 <footer class="footer">
-  <div class="footer-content">
-    <p> Praetura Ventures 2020 &copy;</p>
-  </div>
+    <div class="footer-content">
+      <p> Praetura Ventures 2020 &copy;</p>
+    </div>
 
 </footer>
 

@@ -222,6 +222,9 @@
   width: 80%;
   margin: auto;
   margin-top: 3rem;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px dashed #03ceab;
   
   display: grid;
   /* grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); */
@@ -230,6 +233,35 @@
   
   justify-items: center;
   align-items: center;
+}
+
+.button-section {
+  height: 80px;
+  width: 80%;
+  margin: auto;
+
+}
+
+
+
+.button-wrapper {
+  display: flex;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.delete-btn-container{
+  border: 1px solid black;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+
+
+  height: 100%;
+  width: 100%;
 }
 
 .node-number{
@@ -298,7 +330,7 @@
 .field-set {
   /*display: grid;*/
   /*grid-template-columns: 1fr 1fr;*/
-  margin-top: 3rem;
+  margin-top: 0rem;
 }
 
 .field-divider-wrapper {
@@ -312,6 +344,7 @@
 .divider-headers {
   margin: 0;
   color: #fc6045;
+
 }
 
 .divider-hr {

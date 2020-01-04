@@ -251,14 +251,14 @@ function generateHtmlInputs(inputList) {
                 let html = `<div class="form-group">
                 <label for="${field}">${fieldNameMapping[field]}</label>
                 <select multiple class="form-control" id="${field}">
-                <option value="Andy">Andy</option>
-                <option value="Guy">Guy</option>
-                <option value="Jamie">Jamie</option>
-                <option value="Louise">Louise</option>
-                <option value="Mark">Mark</option>
-                <option value="Myrto">Myrto</option>
-                <option value="Pete">Pete</option>     
-                <option value="Sim">Sim</option>
+                <option value="Andy Round">Andy Round</option>
+                <option value="Guy Weaver">Guy Weaver</option>
+                <option value="Jamie Newall">Jamie Newall</option>
+                <option value="Louise Chapman">Louise Chapman</option>
+                <option value="Mark Lyons">Mark Lyons</option>
+                <option value="Myrto Lalacos">Myrto Lalacos</option>
+                <option value="Pete Carway">Pete Carway</option>     
+                <option value="Sim Landa">Sim Landa</option>
                 </select>
               </div>`;
               htmlToInject += html;
@@ -315,6 +315,11 @@ function insertIntegerInput(FieldName) {
                      
     `;
     return html;
+}
+
+
+function generateModals() {
+
 }
 
 function generateStageEightAllocationTable(){
