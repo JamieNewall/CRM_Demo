@@ -11241,7 +11241,9 @@ UIController.setLoadState(8);
 UIController.setFields(8);
 UIController.loadEventListeners();
 document.getElementById('add-opp').addEventListener('click', function () {
-  fetch('/request').then(function (data) {
+  fetch('/summary').then(function (data) {
+    return data.text();
+  }).then(function (data) {
     return console.log(data);
   })["catch"](function () {
     return console.log('Something went wrong');
@@ -11407,6 +11409,51 @@ function () {
       } else {
         mobileMenu.style.display = "none";
       }
+    }
+  }, {
+    key: "buildSummaryTable",
+    value: function buildSummaryTable(data) {
+      var table = document.getElementById("summary-table");
+      var html = '';
+      var lengthOf = data.length;
+      data.forEach(function (row, index) {
+        if (row.one_OppName === undefined) {} else {
+          html += "\n\n        <tr id=\"row-".concat(row.one_OppName, "\" class=\"summary-row ").concat(row.one_OppName, " ").concat(row.opp_CurrentStage, " ").concat(row.one_PvLead, " ").concat(row.one_Location, " ").concat(row.opp_Status, "\">\n        \n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_OppName, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_CurrentStage, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_PvLead, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_InvestmentAmount, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_Location, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_Status, "</a></td>\n       \n      </tr>\n        ");
+        }
+      });
+      table.innerHTML = html;
+      this.createPagination(lengthOf);
+    }
+  }, {
+    key: "displayRows",
+    value: function displayRows(startIndex) {
+      var rows = document.querySelectorAll('.summary-row');
+      var endIndex = startIndex + 50;
+      rows.forEach(function (row, index) {
+        if (startIndex <= index && index < endIndex) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+  }, {
+    key: "createPagination",
+    value: function createPagination(length) {
+      var pagination = document.querySelector('.pagination');
+      var backBtn = document.querySelector('.pagination-back');
+      var numberOfButtons = Math.ceil(length / 50);
+      var html = '';
+
+      for (var i = 1; i <= numberOfButtons; i++) {
+        if (i === 1) {
+          html += "<li class=\"page-item pagination-link active\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+        } else {
+          html += "<li class=\"page-item pagination-link\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+        }
+      }
+
+      backBtn.parentNode.insertBefore(document.createRange().createContextualFragment(html), backBtn.nextSibling);
     }
   }]);
 

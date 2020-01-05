@@ -67,24 +67,24 @@
       </div>
       <div class="form-group select-dropdown">
         <label for="location-filter">Location:</label>
-        <select class="form-control" id="stage-filter">
+        <select class="form-control" id="location-filter">
           <option value="">Any Location</option>
           <option value="London">London</option>
           <option value="Manchester">Manchester</option>
         </select>
       </div>
       <div class="form-group select-dropdown">
-        <label for="stage-filter">Person:</label>
-        <select class="form-control" id="stage-filter">
+        <label for="person-filter">Person:</label>
+        <select class="form-control" id="person-filter">
           <option value="">Any Person</option>
-          <option value="Andy">Andy</option>
-          <option value="Guy">Guy</option>
-          <option value="Jamie">Jamie</option>
-          <option value="Louise">Louise</option>
-          <option value="Mark">Mark</option>
-          <option value="Myrto">Myrto</option>
-          <option value="Pete">Pete</option>     
-          <option value="Sim">Sim</option>
+          <option value="Andy Round">Andy Round</option>
+          <option value="Guy Weaver">Guy Weaver</option>
+          <option value="Jamie Newall">Jamie Newall</option>
+          <option value="Louise Chapman">Louise Chapman</option>
+          <option value="Mark Lyons">Mark Lyons</option>
+          <option value="Myrto Lalacos">Myrto Lalacos</option>
+          <option value="Peter Carway">Peter Carway</option>
+          <option value="Sim Landa">Sim Landa</option>
         </select>
       </div>
       <div class="form-group select-dropdown">
@@ -120,33 +120,28 @@
         <th scope="col" class="table-header">Status<i class="fas fa-sort"></i></th>
       </tr>
       </thead>
-      <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        <td>@fat</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
-        <td>@twitter</td>
-        <td>@twitter</td>
-      </tr>
+      <tbody id="summary-table">
+
+
+
       </tbody>
     </table>
+  </div>
+
+  <div class="pagination-container">
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item disabled pagination-back">
+          <a class="page-link" href="" tabindex="-1">Previous</a>
+        </li>
+
+
+        <li class="page-item pagination-next">
+          <a class="page-link" href="">Next</a>
+        </li>
+      </ul>
+    </nav>
+
   </div>
 
 

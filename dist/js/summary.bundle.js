@@ -128,11 +128,72 @@ var TableController = __webpack_require__(/*! ./tablecontroller.js */ "./src/js/
 
 var UIController = __webpack_require__(/*! ./uicontroller */ "./src/js/uicontroller.js");
 
- // Init page
+
+
+function buildTable() {
+  var data = fetch('/getData').then(function (res) {
+    return res.json();
+  }).then(function (res) {
+    UIController.buildSummaryTable(res);
+  })["catch"](function (err) {
+    return console.log(err);
+  });
+}
+
+function addFilterEventListeners() {
+  var filters = document.querySelectorAll('select');
+  filters.forEach(function (filter) {
+    filter.addEventListener('change', function (e) {
+      fetch("/getFilteredData/".concat(e.target.value, "/").concat(e.target.id), {
+        method: 'POST'
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        UIController.buildSummaryTable(res);
+      });
+    });
+  });
+  document.querySelector('#search-input').addEventListener('keyup', function () {
+    var rows = document.querySelectorAll('.summary-row');
+    var searchVal = document.querySelector('#search-input').value.toLowerCase();
+    rows.forEach(function (row) {
+      var test = row.classList;
+      var arrTest = Array.from(test);
+      var cleansedList = arrTest.filter(function (index) {
+        if (index.toLowerCase().includes(searchVal)) {
+          return true;
+        }
+      });
+      console.log(cleansedList);
+
+      if (cleansedList.length > 0) {
+        row.style.display = 'table-row';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }); //TODO need to finish
+
+  var paginationLinks = document.querySelectorAll('.pagination-link');
+  paginationLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      console.log(e.target.textContent);
+      var startIndex = Number.parseInt(e.target.textContent);
+      UIController.displayRows(startIndex);
+    });
+  });
+  var back = document.querySelector('.pagination-back');
+  var next = document.querySelector('.pagination-next');
+  back.addEventListener('click', function (e) {});
+} // Init page
+
 
 document.querySelector('#navbar-logo').src = _assets_img_Praetura_Ventures_logo_white_rgb_small1_png__WEBPACK_IMPORTED_MODULE_1__["default"];
 TableController.filterToggle();
 UIController.loadEventListeners();
+buildTable();
+addFilterEventListeners();
 
 /***/ }),
 
@@ -351,6 +412,51 @@ function () {
       } else {
         mobileMenu.style.display = "none";
       }
+    }
+  }, {
+    key: "buildSummaryTable",
+    value: function buildSummaryTable(data) {
+      var table = document.getElementById("summary-table");
+      var html = '';
+      var lengthOf = data.length;
+      data.forEach(function (row, index) {
+        if (row.one_OppName === undefined) {} else {
+          html += "\n\n        <tr id=\"row-".concat(row.one_OppName, "\" class=\"summary-row ").concat(row.one_OppName, " ").concat(row.opp_CurrentStage, " ").concat(row.one_PvLead, " ").concat(row.one_Location, " ").concat(row.opp_Status, "\">\n        \n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_OppName, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_CurrentStage, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_PvLead, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_InvestmentAmount, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_Location, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_Status, "</a></td>\n       \n      </tr>\n        ");
+        }
+      });
+      table.innerHTML = html;
+      this.createPagination(lengthOf);
+    }
+  }, {
+    key: "displayRows",
+    value: function displayRows(startIndex) {
+      var rows = document.querySelectorAll('.summary-row');
+      var endIndex = startIndex + 50;
+      rows.forEach(function (row, index) {
+        if (startIndex <= index && index < endIndex) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+  }, {
+    key: "createPagination",
+    value: function createPagination(length) {
+      var pagination = document.querySelector('.pagination');
+      var backBtn = document.querySelector('.pagination-back');
+      var numberOfButtons = Math.ceil(length / 50);
+      var html = '';
+
+      for (var i = 1; i <= numberOfButtons; i++) {
+        if (i === 1) {
+          html += "<li class=\"page-item pagination-link active\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+        } else {
+          html += "<li class=\"page-item pagination-link\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+        }
+      }
+
+      backBtn.parentNode.insertBefore(document.createRange().createContextualFragment(html), backBtn.nextSibling);
     }
   }]);
 
