@@ -11466,8 +11466,8 @@ function () {
                   return res.json();
                 }).then(function (res) {
                   _this2.buildSummaryTable(res);
-
-                  console.log('build table done');
+                }).then(function () {
+                  return console.log('build table done');
                 })["catch"](function (err) {
                   return console.log(err);
                 });
@@ -11502,9 +11502,9 @@ function () {
 
       for (var i = 1; i <= numberOfButtons; i++) {
         if (i === 1) {
-          html += "<li class=\"page-item pagination-link active\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+          html += "<li class=\"page-item pagination-link added-pagination active\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
         } else {
-          html += "<li class=\"page-item pagination-link\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+          html += "<li class=\"page-item pagination-link\" ><a class=\"page-link added-pagination\" href=\"\">".concat(i, "</a></li>");
         }
       }
 

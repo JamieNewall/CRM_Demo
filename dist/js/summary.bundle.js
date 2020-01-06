@@ -151,11 +151,16 @@ function getState() {
 
 function paginationHandler() {
   //TODO need to finish back and next btns
-  var paginationLinks = document.querySelectorAll('.pagination-link');
+  var paginationLinks = document.querySelectorAll('.added-pagination');
   paginationLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
-      link.setAttribute('active:', 'active');
+      e.target.parentNode.parentNode.childNodes.forEach(function (node) {
+        if (node.classList !== undefined) {
+          node.classList.remove('active');
+        }
+      });
+      e.target.parentNode.classList.toggle('active');
       var startIndex = Number.parseInt(e.target.textContent);
       UIController.displayRows(startIndex);
     });
@@ -163,6 +168,33 @@ function paginationHandler() {
   var back = document.querySelector('.pagination-back');
   var next = document.querySelector('.pagination-next');
   back.addEventListener('click', function (e) {
+    e.preventDefault();
+    var target = document.querySelector('.pagination li.active');
+    var nextTarget = target.previousSibling;
+    console.log(nextTarget.textContent);
+
+    if (Number.parseInt(target.textContent) > 1) {
+      target.classList.remove('active');
+      nextTarget.click();
+      nextTarget.classList.add('active');
+    }
+  });
+  next.addEventListener('click', function (e) {
+    var target = document.querySelector('.pagination li.active');
+    var paginationLength = document.querySelectorAll('.pagination-link').length;
+    var nextTarget = target.nextSibling;
+    console.log(paginationLength);
+    console.log(target.textContent, nextTarget.textContent);
+
+    if (Number.parseInt(target.textContent) < paginationLength) {
+      target.classList.remove('active');
+      console.log(nextTarget);
+      nextTarget.firstChild.click();
+      console.log('clicked');
+      nextTarget.classList.add('active');
+    }
+
+    e.stopImmediatePropagation();
     e.preventDefault();
   });
 } //TODO use getState and send all states to get all filters data. onload only get active still
@@ -211,6 +243,7 @@ UIController.loadEventListeners();
 UIController.buildTable().then(function () {
   addFilterEventListeners();
   setInitState();
+  paginationHandler();
 });
 
 /***/ }),
@@ -488,8 +521,8 @@ function () {
                   return res.json();
                 }).then(function (res) {
                   _this2.buildSummaryTable(res);
-
-                  console.log('build table done');
+                }).then(function () {
+                  return console.log('build table done');
                 })["catch"](function (err) {
                   return console.log(err);
                 });
@@ -524,9 +557,9 @@ function () {
 
       for (var i = 1; i <= numberOfButtons; i++) {
         if (i === 1) {
-          html += "<li class=\"page-item pagination-link active\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+          html += "<li class=\"page-item pagination-link added-pagination active\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
         } else {
-          html += "<li class=\"page-item pagination-link\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+          html += "<li class=\"page-item pagination-link\" ><a class=\"page-link added-pagination\" href=\"\">".concat(i, "</a></li>");
         }
       }
 

@@ -214,9 +214,9 @@ class UIController {
       this.buildSummaryTable(res);
 
 
-      console.log('build table done')
 
-    }).catch((err) => console.log(err))
+
+    }).then(() => console.log('build table done')).catch((err) => console.log(err))
 
 
 
@@ -231,10 +231,10 @@ class UIController {
     document.querySelectorAll('.pagination-link').forEach((node) => node.remove())
     for (let i = 1; i <= numberOfButtons; i++) {
       if (i === 1) {
-        html += `<li class="page-item pagination-link active" ><a class="page-link" href="">${i}</a></li>`;
+        html += `<li class="page-item pagination-link added-pagination active" ><a class="page-link" href="">${i}</a></li>`;
 
       } else {
-        html += `<li class="page-item pagination-link" ><a class="page-link" href="">${i}</a></li>`;
+        html += `<li class="page-item pagination-link" ><a class="page-link added-pagination" href="">${i}</a></li>`;
 
       }
 

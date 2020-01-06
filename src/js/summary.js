@@ -33,12 +33,19 @@ function getState() {
 
 function paginationHandler() {
     //TODO need to finish back and next btns
-    let paginationLinks = document.querySelectorAll('.pagination-link')
+    let paginationLinks = document.querySelectorAll('.added-pagination')
     paginationLinks.forEach((link) => {
         link.addEventListener('click', (e) => {
 
             e.preventDefault();
-            link.setAttribute('active:','active');
+            e.target.parentNode.parentNode.childNodes.forEach((node) => {
+                if (node.classList !== undefined) {
+                    node.classList.remove('active');
+                }
+            })
+            e.target.parentNode.classList.toggle('active');
+
+
 
 
             let startIndex = Number.parseInt(e.target.textContent);
@@ -53,7 +60,34 @@ function paginationHandler() {
     let next = document.querySelector('.pagination-next');
     back.addEventListener('click', (e) => {
         e.preventDefault();
+        let target = document.querySelector('.pagination li.active');
+        let nextTarget = target.previousSibling;
+        console.log(nextTarget.textContent)
+        if (Number.parseInt(target.textContent) > 1) {
+            target.classList.remove('active');
+            nextTarget.click();
+            nextTarget.classList.add('active');
+        }
 
+    })
+    next.addEventListener('click', (e) => {
+
+
+        let target = document.querySelector('.pagination li.active');
+        let paginationLength = document.querySelectorAll('.pagination-link').length
+        let nextTarget = target.nextSibling;
+        console.log(paginationLength)
+        console.log(target.textContent , nextTarget.textContent)
+
+        if (Number.parseInt(target.textContent) < paginationLength ) {
+            target.classList.remove('active');
+            console.log(nextTarget)
+            nextTarget.firstChild.click();
+            console.log('clicked')
+            nextTarget.classList.add('active');
+        }
+        e.stopImmediatePropagation();
+        e.preventDefault();
     })
 }
 
@@ -108,6 +142,7 @@ UIController.loadEventListeners();
 UIController.buildTable().then(() => {
     addFilterEventListeners();
     setInitState();
+    paginationHandler();
 })
 
 
