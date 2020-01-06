@@ -181,30 +181,34 @@ class dbController {
 
         }
 
-        static filterData(data , filterItem, filter) {
-            let newData;
-        if (filterItem === 'stage-filter') {
-            newData = data.filter(function(item) {
-                return item.opp_CurrentStage === filter;
-            })
-        } else if (filterItem === 'location-filter') {
-            newData = data.filter(function(item) {
-                return item.one_Location === filter;
-            })
-        } else if (filterItem === 'status-filter') {
-            newData = data.filter(function(item) {
-                return item.opp_Status === filter;
-            })
-        } else if (filterItem === 'person-filter') {
-            newData = data.filter(function(item) {
-                return item.one_PvLead === filter;
-            })
-        }
+        static filterData(data , filterItem, filter, state) {
 
-        return newData;
+            let {person, status, location, stage} = state;
+                if (stage !== 'Stage') {
+                    data = data.filter(function(item) {
+                        return item.opp_CurrentStage === stage;
+                    })
+                }
+                if (location !== 'Location') {
+                    data = data.filter(function(item) {
+                        return item.one_Location === location;
+                    })
+                }
+                if (status !== 'Status') {
+                    data = data.filter(function(item) {
+                        return item.opp_Status === status;
+                    })
+                }
+                if (person !== 'Person') {
+                    data = data.filter(function(item) {
+                        return item.one_PvLead === person;
+                    })
+                }
+
+            return data;
 
 
-        }
+                }
 
         static sortData(data, order, column) {
                 console.log(Number.parseInt(data[0][column]))

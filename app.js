@@ -20,7 +20,7 @@ const port = process.env.PORT || 3000;
 
 
 //Middleware
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -41,7 +41,8 @@ app.get('/help', (req,res) => {
 app.get('/getData' , async function(req,res) {
     console.log('endpoint hit')
     let data = await DbController.getAllData();
-    data = DbController.filterData(data , 'status-filter', 'Active')
+    let state = {person:"Person",location:"Location",status:"Active",stage:"Stage"}
+    data = DbController.filterData(data , 'status-filter', 'Active', state)
     let sortData = DbController.sortData(data, "DESC",'opp_CurrentStage');
     res.json(sortData);
 
@@ -50,7 +51,9 @@ app.get('/getData' , async function(req,res) {
 app.post('/getFilteredData/:filter/:filterItem' , async function(req,res) {
     console.log('filter endpoint hit')
     let data = await DbController.getAllData();
-    let filteredData = DbController.filterData(data,req.params.filterItem ,req.params.filter)
+    let state = req.body;
+
+    let filteredData = DbController.filterData(data,req.params.filterItem ,req.params.filter, state)
 
     res.json(filteredData);
 

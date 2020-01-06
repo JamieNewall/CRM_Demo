@@ -148,9 +148,13 @@ class UIController {
   }
 
   static buildSummaryTable(data) {
+    document.querySelectorAll('.summary-row').forEach((row) => row.remove());
+    console.log('start build summary table');
     let table = document.getElementById("summary-table");
     let html = '';
     let lengthOf = data.length;
+
+
 
 
     data.forEach((row, index) => {
@@ -162,35 +166,60 @@ class UIController {
         html +=
             `
 
-        <tr id="row-${row.one_OppName}" class="summary-row ${row.one_OppName} ${row.opp_CurrentStage} ${row.one_PvLead} ${row.one_Location} ${row.opp_Status}">
+        <tr id="row-${row.one_OppName}" class="summary-row ">
         
-        <td><a href="/opportunity/${row.one_OppName}}">${row.one_OppName}</a></td>
-        <td><a href="/opportunity/${row.one_OppName}}">${row.opp_CurrentStage}</a></td>
-        <td><a href="/opportunity/${row.one_OppName}}">${row.one_PvLead}</a></td>
-        <td><a href="/opportunity/${row.one_OppName}}">${row.one_InvestmentAmount}</a></td>
-        <td><a href="/opportunity/${row.one_OppName}}">${row.one_Location}</a></td>
-        <td><a href="/opportunity/${row.one_OppName}}">${row.opp_Status}</a></td>
+        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_OppName}</a></td>
+        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.opp_CurrentStage}</a></td>
+        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_PvLead}</a></td>
+        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_InvestmentAmount}</a></td>
+        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_Location}</a></td>
+        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.opp_Status}</a></td>
        
       </tr>
         `;
       }
     })
     table.innerHTML = html;
+
     this.createPagination(lengthOf);
+    console.log('end build summary table');
+
+
+
+
+
 
   }
 
-  static displayRows(startIndex) {
+  static displayRows(endIndex) {
     let rows = document.querySelectorAll('.summary-row');
-    let endIndex = startIndex + 50;
+    let begIndex = (endIndex === 0) ? 0:(endIndex * 25) - 25;
+    let finishIndex = (begIndex === 0) ? 25 :endIndex * 25;
+    console.log(begIndex , finishIndex)
+
 
     rows.forEach((row, index) => {
-      if (startIndex <= index && index < endIndex) {
+      if (begIndex <= index && index < finishIndex) {
         row.style.display = 'table-row';
       } else {
         row.style.display = 'none';
       }
     })
+  }
+
+  static  async buildTable() {
+    let data = await fetch('/getData').then(res => {return res.json()}).then((res) => {
+
+
+      this.buildSummaryTable(res);
+
+
+      console.log('build table done')
+
+    }).catch((err) => console.log(err))
+
+
+
   }
 
 
@@ -199,7 +228,7 @@ class UIController {
     let backBtn = document.querySelector('.pagination-back');
     let numberOfButtons = Math.ceil(length / 50);
     let html = '';
-
+    document.querySelectorAll('.pagination-link').forEach((node) => node.remove())
     for (let i = 1; i <= numberOfButtons; i++) {
       if (i === 1) {
         html += `<li class="page-item pagination-link active" ><a class="page-link" href="">${i}</a></li>`;

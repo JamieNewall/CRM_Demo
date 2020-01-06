@@ -11259,6 +11259,10 @@ document.getElementById('add-opp').addEventListener('click', function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -11413,24 +11417,31 @@ function () {
   }, {
     key: "buildSummaryTable",
     value: function buildSummaryTable(data) {
+      document.querySelectorAll('.summary-row').forEach(function (row) {
+        return row.remove();
+      });
+      console.log('start build summary table');
       var table = document.getElementById("summary-table");
       var html = '';
       var lengthOf = data.length;
       data.forEach(function (row, index) {
         if (row.one_OppName === undefined) {} else {
-          html += "\n\n        <tr id=\"row-".concat(row.one_OppName, "\" class=\"summary-row ").concat(row.one_OppName, " ").concat(row.opp_CurrentStage, " ").concat(row.one_PvLead, " ").concat(row.one_Location, " ").concat(row.opp_Status, "\">\n        \n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_OppName, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_CurrentStage, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_PvLead, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_InvestmentAmount, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_Location, "</a></td>\n        <td><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_Status, "</a></td>\n       \n      </tr>\n        ");
+          html += "\n\n        <tr id=\"row-".concat(row.one_OppName, "\" class=\"summary-row \">\n        \n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_OppName, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_CurrentStage, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_PvLead, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_InvestmentAmount, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_Location, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_Status, "</a></td>\n       \n      </tr>\n        ");
         }
       });
       table.innerHTML = html;
       this.createPagination(lengthOf);
+      console.log('end build summary table');
     }
   }, {
     key: "displayRows",
-    value: function displayRows(startIndex) {
+    value: function displayRows(endIndex) {
       var rows = document.querySelectorAll('.summary-row');
-      var endIndex = startIndex + 50;
+      var begIndex = endIndex === 0 ? 0 : endIndex * 25 - 25;
+      var finishIndex = begIndex === 0 ? 25 : endIndex * 25;
+      console.log(begIndex, finishIndex);
       rows.forEach(function (row, index) {
-        if (startIndex <= index && index < endIndex) {
+        if (begIndex <= index && index < finishIndex) {
           row.style.display = 'table-row';
         } else {
           row.style.display = 'none';
@@ -11438,12 +11449,56 @@ function () {
       });
     }
   }, {
+    key: "buildTable",
+    value: function () {
+      var _buildTable = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
+
+        var data;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch('/getData').then(function (res) {
+                  return res.json();
+                }).then(function (res) {
+                  _this2.buildSummaryTable(res);
+
+                  console.log('build table done');
+                })["catch"](function (err) {
+                  return console.log(err);
+                });
+
+              case 2:
+                data = _context.sent;
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function buildTable() {
+        return _buildTable.apply(this, arguments);
+      }
+
+      return buildTable;
+    }()
+  }, {
     key: "createPagination",
     value: function createPagination(length) {
       var pagination = document.querySelector('.pagination');
       var backBtn = document.querySelector('.pagination-back');
       var numberOfButtons = Math.ceil(length / 50);
       var html = '';
+      document.querySelectorAll('.pagination-link').forEach(function (node) {
+        return node.remove();
+      });
 
       for (var i = 1; i <= numberOfButtons; i++) {
         if (i === 1) {
