@@ -157,6 +157,26 @@
   min-width: 100vw !important;
 }
 
+#bootstrap-override input[readonly], #bootstrap-override input[readonly]:focus{
+  background-color:transparent;
+
+  box-shadow: none;
+  outline: 0 none;
+
+
+
+}
+
+#bootstrap-override select[disabled]{
+  background-color:transparent;
+
+  box-shadow: none;
+  outline: 0 none;
+
+
+
+}
+
 #bootstrap-override #navbar-links-container{
   height: 64px;
   margin-right: 2rem;

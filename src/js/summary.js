@@ -61,14 +61,16 @@ function paginationHandler() {
     back.addEventListener('click', (e) => {
         e.preventDefault();
         let target = document.querySelector('.pagination li.active');
+        let paginationLength = document.querySelectorAll('.pagination-link').length
         let nextTarget = target.previousSibling;
         console.log(nextTarget.textContent)
         if (Number.parseInt(target.textContent) > 1) {
             target.classList.remove('active');
-            nextTarget.click();
+            nextTarget.firstChild.click();
             nextTarget.classList.add('active');
         }
-
+        e.stopImmediatePropagation();
+        e.preventDefault();
     })
     next.addEventListener('click', (e) => {
 
@@ -76,8 +78,7 @@ function paginationHandler() {
         let target = document.querySelector('.pagination li.active');
         let paginationLength = document.querySelectorAll('.pagination-link').length
         let nextTarget = target.nextSibling;
-        console.log(paginationLength)
-        console.log(target.textContent , nextTarget.textContent)
+
 
         if (Number.parseInt(target.textContent) < paginationLength ) {
             target.classList.remove('active');
@@ -91,8 +92,7 @@ function paginationHandler() {
     })
 }
 
-//TODO use getState and send all states to get all filters data. onload only get active still
-//TODO on state change on desc/asc on headers , filter dom dont refetch
+
 function addFilterEventListeners() {
      console.log('addEvent listeners')
     let filters = document.querySelectorAll('select');
@@ -116,8 +116,17 @@ function addFilterEventListeners() {
 })
     document.querySelector('#search-input').addEventListener('keyup', () => {
         let tableEntries = document.querySelectorAll('.summary-row');
+        let page = document.querySelector('.pagination li.active').textContent;
+        UIController.displayRows(page)
+
+        let testEntries =[];
+        tableEntries.forEach((entry) => {
+            if (entry.style.display === 'table-row') {
+                testEntries.push(entry)
+            }
+        })
         let searchVal = document.querySelector('#search-input').value.toLowerCase();
-        tableEntries.forEach((row) => {
+        testEntries.forEach((row) => {
             if (row.textContent.toLowerCase().includes(searchVal)) {
                 row.style.display = 'table-row';
             } else {

@@ -162,18 +162,18 @@ class UIController {
 
       } else {
 
-
+        let url = row.one_OppName.trim().split(' ').join('_');
         html +=
             `
 
         <tr id="row-${row.one_OppName}" class="summary-row ">
         
-        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_OppName}</a></td>
-        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.opp_CurrentStage}</a></td>
-        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_PvLead}</a></td>
-        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_InvestmentAmount}</a></td>
-        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.one_Location}</a></td>
-        <td class="table-entry"><a href="/opportunity/${row.one_OppName}}">${row.opp_Status}</a></td>
+        <td class="table-entry"><a href="/opportunity/${url}}">${row.one_OppName}</a></td>
+        <td class="table-entry"><a href="/opportunity/${url}}">${row.opp_CurrentStage}</a></td>
+        <td class="table-entry"><a href="/opportunity/${url}}">${row.one_PvLead}</a></td>
+        <td class="table-entry"><a href="/opportunity/${url}}">${row.one_InvestmentAmount}</a></td>
+        <td class="table-entry"><a href="/opportunity/${url}}">${row.one_Location}</a></td>
+        <td class="table-entry"><a href="/opportunity/${url}}">${row.opp_Status}</a></td>
        
       </tr>
         `;

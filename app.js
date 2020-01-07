@@ -60,6 +60,18 @@ app.post('/getFilteredData/:filter/:filterItem' , async function(req,res) {
 
 });
 
+app.post('/getOppData', async (req,res) => {
+    let opp = req.body;
+    let data = await DbController.getOppData(opp.value);
+    console.log(data);
+    res.json(data)
+})
+
+app.get('/opportunity/:opp' , (req, res) => {
+    console.log('opp route hit');
+    res.sendFile(path.resolve(__dirname,'dist','html','opp.html'));
+})
+
 
 
 app.get('/', (req,res) => {

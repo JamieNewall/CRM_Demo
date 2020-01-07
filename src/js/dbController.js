@@ -181,12 +181,21 @@ class dbController {
 
         }
 
+        static getOppData(opp) {
+        console.log(opp)
+        let data = DB.findAll({where: {one_OppName: opp}});
+        return data;
+        // let data = DB.query('SELECT * FROM opportun')
+
+        }
+
         static filterData(data , filterItem, filter, state) {
 
             let {person, status, location, stage} = state;
                 if (stage !== 'Stage') {
                     data = data.filter(function(item) {
-                        return item.opp_CurrentStage === stage;
+
+                        return item.opp_CurrentStage == stage;
                     })
                 }
                 if (location !== 'Location') {
@@ -211,7 +220,7 @@ class dbController {
                 }
 
         static sortData(data, order, column) {
-                console.log(Number.parseInt(data[0][column]))
+
             if (Number.isNaN(Number.parseInt(data[0][column]))) {
                 if(order === 'ASC') {
                     console.log('asc string')

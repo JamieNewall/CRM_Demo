@@ -170,21 +170,23 @@ function paginationHandler() {
   back.addEventListener('click', function (e) {
     e.preventDefault();
     var target = document.querySelector('.pagination li.active');
+    var paginationLength = document.querySelectorAll('.pagination-link').length;
     var nextTarget = target.previousSibling;
     console.log(nextTarget.textContent);
 
     if (Number.parseInt(target.textContent) > 1) {
       target.classList.remove('active');
-      nextTarget.click();
+      nextTarget.firstChild.click();
       nextTarget.classList.add('active');
     }
+
+    e.stopImmediatePropagation();
+    e.preventDefault();
   });
   next.addEventListener('click', function (e) {
     var target = document.querySelector('.pagination li.active');
     var paginationLength = document.querySelectorAll('.pagination-link').length;
     var nextTarget = target.nextSibling;
-    console.log(paginationLength);
-    console.log(target.textContent, nextTarget.textContent);
 
     if (Number.parseInt(target.textContent) < paginationLength) {
       target.classList.remove('active');
@@ -197,9 +199,7 @@ function paginationHandler() {
     e.stopImmediatePropagation();
     e.preventDefault();
   });
-} //TODO use getState and send all states to get all filters data. onload only get active still
-//TODO on state change on desc/asc on headers , filter dom dont refetch
-
+}
 
 function addFilterEventListeners() {
   console.log('addEvent listeners');
@@ -225,8 +225,16 @@ function addFilterEventListeners() {
   });
   document.querySelector('#search-input').addEventListener('keyup', function () {
     var tableEntries = document.querySelectorAll('.summary-row');
+    var page = document.querySelector('.pagination li.active').textContent;
+    UIController.displayRows(page);
+    var testEntries = [];
+    tableEntries.forEach(function (entry) {
+      if (entry.style.display === 'table-row') {
+        testEntries.push(entry);
+      }
+    });
     var searchVal = document.querySelector('#search-input').value.toLowerCase();
-    tableEntries.forEach(function (row) {
+    testEntries.forEach(function (row) {
       if (row.textContent.toLowerCase().includes(searchVal)) {
         row.style.display = 'table-row';
       } else {
@@ -273,30 +281,155 @@ function () {
     // adds event listeners and font awesome toggle
     //TODO need to add logic to filter data
     value: function filterToggle() {
+      var _this = this;
+
       var headers = document.querySelectorAll('.table-header');
       headers.forEach(function (header) {
         header.addEventListener('click', function (e) {
+          var headers = document.querySelectorAll('.table-header');
+          var targetState = '';
+          var targetNode;
+          var columnText = '';
+
           if (e.target.tagName === 'TH') {
-            if (e.target.children[0].className === "fas fa-sort") {
-              e.target.children[0].className = "fas fa-sort-up";
-            } else if (e.target.children[0].className === "fas fa-sort-up") {
-              e.target.children[0].className = "fas fa-sort-down";
-            } else {
-              e.target.children[0].className = "fas fa-sort";
-            }
+            targetState = e.target.children[0].className;
+            targetNode = e.target.children[0];
+            columnText = e.target.textContent;
           } else {
-            if (e.target.className === "fas fa-sort") {
-              e.target.className = "fas fa-sort-up";
-            } else if (e.target.className === "fas fa-sort-up") {
-              e.target.className = "fas fa-sort-down";
-            } else {
-              e.target.className = "fas fa-sort";
-            }
+            targetState = e.target.className;
+            targetNode = e.target;
+            columnText = e.target.parentNode.textContent;
+          } //remove state from all first
+
+
+          headers.forEach(function (header) {
+            header.children[0].className = "fas fa-sort";
+          });
+
+          if (targetState === "fas fa-sort") {
+            targetNode.className = "fas fa-sort-up";
+          } else if (targetState === "fas fa-sort-up") {
+            targetNode.className = "fas fa-sort-down";
+          } else {
+            targetNode.className = "fas fa-sort-up";
           }
 
-          var currentState = e.target;
+          var data = document.querySelectorAll('.summary-row');
+          var arrData = Array.from(data);
+          var filterMethod = targetNode.className;
+          var filter = '';
+
+          if (filterMethod === "fas fa-sort-up") {
+            filter = 'ASC';
+          } else {
+            filter = 'DESC';
+          }
+
+          var cleansedData = arrData.filter(function (item) {
+            if (item.style.display === 'table-row') {
+              return true;
+            } else {
+              return false;
+            }
+          });
+          var column = 0;
+
+          switch (columnText) {
+            case 'Name':
+              column = 1;
+              break;
+
+            case 'Stage':
+              column = 2;
+              break;
+
+            case 'Person/Owner':
+              column = 3;
+              break;
+
+            case 'Person/Owner':
+              column = 3;
+              break;
+
+            case 'Investment Amount':
+              column = 4;
+              break;
+
+            case 'Location':
+              column = 5;
+              break;
+
+            case 'Status':
+              column = 6;
+              break;
+          }
+
+          _this.sortLoadedData(cleansedData, filter, column);
         });
       });
+    }
+  }, {
+    key: "sortLoadedData",
+    value: function sortLoadedData(data, order, column) {
+      console.log(order);
+      var cleansedData = [];
+      data.forEach(function (item) {
+        cleansedData.push(item.children[column - 1]);
+      });
+
+      if (column === 2 || column === 4) {
+        //  Number sort
+        if (order === 'ASC') {
+          cleansedData.sort(function compare(a, b) {
+            console.log(a.textContent, b.textContent);
+            a = Number.parseInt(a);
+            b = Number.parseInt(b);
+            if (a > b) return 1;
+            if (b > a) return -1;
+            return 0;
+          });
+        } else {
+          cleansedData.sort(function compare(a, b) {
+            console.log(a.textContent, b.textContent);
+            a = Number.parseInt(a);
+            b = Number.parseInt(b);
+            if (a < b) return 1;
+            if (b < a) return -1;
+            return 0;
+          });
+        }
+      } else {
+        //String sort
+        if (order === 'ASC') {
+          console.log(cleansedData);
+          cleansedData.sort(function compare(a, b) {
+            console.log(a.textContent, b.textContent);
+            if (a.textContent > b.textContent) return 1;
+            if (b.textContent > a.textContent) return -1;
+            return 0;
+          });
+        } else {
+          cleansedData.sort(function compare(a, b) {
+            if (a.textContent < b.textContent) return 1;
+            if (b.textContent < a.textContent) return -1;
+            return 0;
+          });
+        }
+
+        var renderData = [];
+        cleansedData.forEach(function (row) {
+          renderData.push(row.parentNode);
+        });
+        document.querySelectorAll('.summary-row').forEach(function (row) {
+          if (row.style.display === 'table-row') {
+            row.remove();
+          }
+        });
+        var table = document.querySelector('#summary-table');
+        renderData.forEach(function (row) {
+          table.appendChild(row);
+        });
+      }
     }
   }]);
 
@@ -481,7 +614,8 @@ function () {
       var lengthOf = data.length;
       data.forEach(function (row, index) {
         if (row.one_OppName === undefined) {} else {
-          html += "\n\n        <tr id=\"row-".concat(row.one_OppName, "\" class=\"summary-row \">\n        \n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_OppName, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_CurrentStage, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_PvLead, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_InvestmentAmount, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.one_Location, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(row.one_OppName, "}\">").concat(row.opp_Status, "</a></td>\n       \n      </tr>\n        ");
+          var url = row.one_OppName.trim().split(' ').join('_');
+          html += "\n\n        <tr id=\"row-".concat(row.one_OppName, "\" class=\"summary-row \">\n        \n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_OppName, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.opp_CurrentStage, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_PvLead, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_InvestmentAmount, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_Location, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.opp_Status, "</a></td>\n       \n      </tr>\n        ");
         }
       });
       table.innerHTML = html;
