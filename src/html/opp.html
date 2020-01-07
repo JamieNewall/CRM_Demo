@@ -7252,19 +7252,22 @@
 
   <div class="button-section">
   <div class="button-container">
+    <div class="edit-button-container">
+      <button class="btn btn-primary" type="button" id="edit-btn">Edit</button>
+    </div>
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Change Status
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="#">
-        <button type="button" class="btn" data-toggle="modal" data-target="#proceed-modal">
+        <button type="button" id="proceed-btn" class="btn" data-toggle="modal" data-target="#proceed-modal">
           Proceed to Next stage
         </button></a>
-        <a class="dropdown-item" href="#"><button type="button" class="btn" data-toggle="modal" data-target="#monitor-modal">
+        <a class="dropdown-item" href="#"><button type="button" id="monitor-btn" class="btn" data-toggle="modal" data-target="#monitor-modal">
           Monitor Opportunity
           </button></a>
-        <a class="dropdown-item" href="#"><button type="button" class="btn" data-toggle="modal" data-target="#decline-modal">
+        <a class="dropdown-item" href="#"><button type="button" class="btn" data-toggle="modal" id="decline-btn" data-target="#decline-modal">
           Decline Opportunity
         </button></a>
       </div>

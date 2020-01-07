@@ -30089,12 +30089,18 @@ function populateInputs(data) {
     }
 
     if (typeMapping[prop] === 'FLOAT') {
-      data[prop] = numeral(data[prop]).format('0 %');
+      if (data[prop] < 1) {
+        data[prop] = data[prop] * 100;
+      } else {// console.log(data[prop], prop)
+      }
     }
 
-    if (typeMapping[prop] === 'FLOAT') {
-      data[prop] = numeral(data[prop]).format('0 %');
-    } // console.log(typeof data[prop], data[prop] , prop)
+    if (typeMapping[prop] === 'BOOLEAN') {} // if (data[prop] === 'Yes' || data[prop] === 'true') {
+    //
+    // }
+    // console.log(data[prop],prop)
+    // data[prop] = numeral(data[prop]).format('0,0');
+    // console.log(typeof data[prop], data[prop] , prop)
 
 
     var input = document.getElementById(prop); // console.log(input, data[prop])

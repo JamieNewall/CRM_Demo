@@ -157,6 +157,11 @@
   min-width: 100vw !important;
 }
 
+#bootstrap-override #edit-btn{
+  width: 95px;
+  margin-right: 1rem;
+}
+
 #bootstrap-override input[readonly], #bootstrap-override input[readonly]:focus{
   background-color:transparent;
 
