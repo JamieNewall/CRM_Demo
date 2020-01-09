@@ -66,6 +66,12 @@ const inputList = [{0:{one_OppName:"STRING"}},{1:{one_OppName:"STRING",
         eight_VpInvestorFourEquity: "FLOAT",  eight_VpInvestorFourShares: "INTEGER"
     }}]
 
+const mandatoryFields = {one_OppName:true,
+    one_PvLead:false,one_IntroDate:false,one_Introducer:false,one_Referrer:false,
+    one_InvestmentAmount:false,one_PreMoney:false,one_TotalInvestment:false,one_EquityPercentage:false,
+    one_Location:false,one_Sector:false,one_InvestmentStage:false,one_InvestmentToDate:false,
+    one_Activity:false,one_TargetCustomers:false}
+
 
 //Labels for fields
 const fieldNameMapping = {
@@ -160,6 +166,17 @@ const fieldNameMapping = {
 // but field-divider will be.
 
 
+function addAsterisk(field) {
+    if(field === 'one_PvLead') {
+        console.log(mandatoryFields[field])
+    }
+    if (mandatoryFields[field]) {
+        return `<span class="red-asterisk">*</span>`
+    } else {
+        return '';
+    }
+}
+
 function generateHtmlInputs(inputList) {
     const formContainer = document.getElementsByClassName('form-controls')[0];
 
@@ -183,7 +200,7 @@ function generateHtmlInputs(inputList) {
             }
             else if (inputList[index][Object.keys(inputList[index])][field] === "STRING") {
                 let html = `<div class="form-group">
-                          <label for="${field}\\">${fieldNameMapping[field]}:</label>
+                          <label for="${field}\\">${fieldNameMapping[field]}${addAsterisk(field)}:</label>
                          <input  id="${field}" type="text" class="validate form-control">
                          
                        </div>`;
@@ -192,14 +209,14 @@ function generateHtmlInputs(inputList) {
             }
             else if (inputList[index][Object.keys(inputList[index])][field] === "TEXTAREA") {
                 let html = `<div class="form-group">
-                          <label for="${field}\\">${fieldNameMapping[field]}:</label>
+                          <label for="${field}\\">${fieldNameMapping[field]}${addAsterisk(field)}:</label>
                          <textarea id="${field}" type="text" class="validate form-control" rows="3"></textarea>
                          
                        </div>`;
                 htmlToInject += html;
             }else if (inputList[index][Object.keys(inputList[index])][field] === "INTEGER" || inputList[index][Object.keys(inputList[index])][field] === "FLOAT") {
                 let html = `<div class="form-group">
-                          <label for="${field}\\">${fieldNameMapping[field]}:</label>
+                          <label for="${field}\\">${fieldNameMapping[field]}${addAsterisk(field)}:</label>
                          <input  id="${field}" type="number" class="validate form-control">
                          
                        </div>`;
@@ -215,7 +232,7 @@ function generateHtmlInputs(inputList) {
                     })
 
                     let html = `<div class="form-group">
-                    <label for="${field}">${fieldNameMapping[field]}:</label>
+                    <label for="${field}">${fieldNameMapping[field]}${addAsterisk(field)}:</label>
                     <select class="form-control" id="${field}">
                       <option value=""></option>
                       ${optionsHtml}
@@ -225,22 +242,22 @@ function generateHtmlInputs(inputList) {
 
             } else if (inputList[index][Object.keys(inputList[index])][field] === "DATEONLY") {
                  let html = `<div class="form-group">
-                    <label for="${field}">${fieldNameMapping[field]}:</label>
+                    <label for="${field}">${fieldNameMapping[field]}${addAsterisk(field)}:</label>
                     <input class="datepicker-ui validate form-control" id="${field}"/>
 
                     </div>`;
                 htmlToInject += html;
             } else if (inputList[index][Object.keys(inputList[index])][field] === "RADIO") {
                 let html = `<div class="form-group">
-                <label for="">${fieldNameMapping[field]}</label>
+                <label for="">${fieldNameMapping[field]}${addAsterisk(field)}</label>
                 <div class="form-check">
-                <input class="form-check-input" type="radio" name="${field}-yes" id="${field}-yes" value="TRUE">
+                <input class="form-check-input" type="radio" name="${field}-yes" id="${field}-yes" value="true">
                 <label class="form-check-label" for="${field}">
                   Yes
                 </label></div>
               
                 <div class="form-check">
-                <input class="form-check-input" type="radio" name="${field}-no" id="${field}-no" value="FALSE">
+                <input class="form-check-input" type="radio" name="${field}-no" id="${field}-no" value="false">
                 <label class="form-check-label" for="${field}-no">
                   No
                 </label>
@@ -249,7 +266,7 @@ function generateHtmlInputs(inputList) {
             } else if (inputList[index][Object.keys(inputList[index])][field] === "MULTISELECT") {
                 // Think this is the only multiselect required, if more need to modify
                 let html = `<div class="form-group">
-                <label for="${field}">${fieldNameMapping[field]}</label>
+                <label for="${field}">${fieldNameMapping[field]}${addAsterisk(field)}:</label>
                 <select multiple class="form-control" id="${field}">
                 <option value="Andy Round">Andy Round</option>
                 <option value="Guy Weaver">Guy Weaver</option>
@@ -386,3 +403,4 @@ function generateStageEightAllocationTable(){
 module.exports.generateHtmlInputs = generateHtmlInputs;
 module.exports.generateStageEightAllocationTable = generateStageEightAllocationTable;
 module.exports.inputList = inputList;
+module.exports.mandatoryFields = mandatoryFields;

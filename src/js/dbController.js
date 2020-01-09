@@ -160,25 +160,6 @@ class dbController {
 
         return data;
 
-
-            // .then((data) => {
-            // console.log(data[2].dataValues.one_OppName)
-
-            // data;
-            // data.forEach((row) => {
-            //     console.log(row.dataValues.one_OppName)
-            // })
-        // }).catch((err) => {
-        //
-        //     console.log(err,'error')
-        // })
-            // DB.findAll({where:{
-            //     one_OppName:'Futr'
-            //     }})
-            //     .then((data) => {
-            //    return data
-            // }).then(data => data).catch((err) => {console.log(err)});
-
         }
 
         static getOppData(opp) {
@@ -256,6 +237,11 @@ class dbController {
             return data;
         }
 
+        static createOpportunity(data) {
+
+            DB.create(data).then((res) => console.log(`entry added ${res}`)).catch((err) => {console.log(err)})
+
+        }
 
 
 }

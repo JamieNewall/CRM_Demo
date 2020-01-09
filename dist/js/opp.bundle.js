@@ -29629,7 +29629,24 @@ var inputList = [{
     eight_VpInvestorFourEquity: "FLOAT",
     eight_VpInvestorFourShares: "INTEGER"
   }
-}]; //Labels for fields
+}];
+var mandatoryFields = {
+  one_OppName: true,
+  one_PvLead: false,
+  one_IntroDate: false,
+  one_Introducer: false,
+  one_Referrer: false,
+  one_InvestmentAmount: false,
+  one_PreMoney: false,
+  one_TotalInvestment: false,
+  one_EquityPercentage: false,
+  one_Location: false,
+  one_Sector: false,
+  one_InvestmentStage: false,
+  one_InvestmentToDate: false,
+  one_Activity: false,
+  one_TargetCustomers: false
+}; //Labels for fields
 
 var fieldNameMapping = {
   one_OppName: 'Opportunity Name',
@@ -29760,6 +29777,18 @@ var fieldNameMapping = {
 // comes across special keyword i.e. divider in inputList, then close out and add new wrapper field-divider. field set no longer a grid,
 // but field-divider will be.
 
+function addAsterisk(field) {
+  if (field === 'one_PvLead') {
+    console.log(mandatoryFields[field]);
+  }
+
+  if (mandatoryFields[field]) {
+    return "<span class=\"red-asterisk\">*</span>";
+  } else {
+    return '';
+  }
+}
+
 function generateHtmlInputs(inputList) {
   var formContainer = document.getElementsByClassName('form-controls')[0];
   inputList.forEach(function (stage, index) {
@@ -29776,14 +29805,14 @@ function generateHtmlInputs(inputList) {
         htmlToInject += "</div><h3 class=\"divider-headers\">".concat(inputList[index][Object.keys(inputList[index])][field], "</h3><hr class=\"divider-hr\">\n                                <div class=\"field-divider-wrapper\" id=\"").concat(dividerId, "\">");
         continue;
       } else if (inputList[index][Object.keys(inputList[index])][field] === "STRING") {
-        var html = "<div class=\"form-group\">\n                          <label for=\"".concat(field, "\\\">").concat(fieldNameMapping[field], ":</label>\n                         <input  id=\"").concat(field, "\" type=\"text\" class=\"validate form-control\">\n                         \n                       </div>");
+        var html = "<div class=\"form-group\">\n                          <label for=\"".concat(field, "\\\">").concat(fieldNameMapping[field]).concat(addAsterisk(field), ":</label>\n                         <input  id=\"").concat(field, "\" type=\"text\" class=\"validate form-control\">\n                         \n                       </div>");
         htmlToInject += html;
       } else if (inputList[index][Object.keys(inputList[index])][field] === "TEXTAREA") {
-        var _html = "<div class=\"form-group\">\n                          <label for=\"".concat(field, "\\\">").concat(fieldNameMapping[field], ":</label>\n                         <textarea id=\"").concat(field, "\" type=\"text\" class=\"validate form-control\" rows=\"3\"></textarea>\n                         \n                       </div>");
+        var _html = "<div class=\"form-group\">\n                          <label for=\"".concat(field, "\\\">").concat(fieldNameMapping[field]).concat(addAsterisk(field), ":</label>\n                         <textarea id=\"").concat(field, "\" type=\"text\" class=\"validate form-control\" rows=\"3\"></textarea>\n                         \n                       </div>");
 
         htmlToInject += _html;
       } else if (inputList[index][Object.keys(inputList[index])][field] === "INTEGER" || inputList[index][Object.keys(inputList[index])][field] === "FLOAT") {
-        var _html2 = "<div class=\"form-group\">\n                          <label for=\"".concat(field, "\\\">").concat(fieldNameMapping[field], ":</label>\n                         <input  id=\"").concat(field, "\" type=\"number\" class=\"validate form-control\">\n                         \n                       </div>");
+        var _html2 = "<div class=\"form-group\">\n                          <label for=\"".concat(field, "\\\">").concat(fieldNameMapping[field]).concat(addAsterisk(field), ":</label>\n                         <input  id=\"").concat(field, "\" type=\"number\" class=\"validate form-control\">\n                         \n                       </div>");
 
         htmlToInject += _html2;
       } else if (_typeof(inputList[index][Object.keys(inputList[index])][field]) === "object") {
@@ -29795,20 +29824,20 @@ function generateHtmlInputs(inputList) {
           optionsHtml += optionValue;
         });
 
-        var _html3 = "<div class=\"form-group\">\n                    <label for=\"".concat(field, "\">").concat(fieldNameMapping[field], ":</label>\n                    <select class=\"form-control\" id=\"").concat(field, "\">\n                      <option value=\"\"></option>\n                      ").concat(optionsHtml, "\n                    </select>\n                  </div>");
+        var _html3 = "<div class=\"form-group\">\n                    <label for=\"".concat(field, "\">").concat(fieldNameMapping[field]).concat(addAsterisk(field), ":</label>\n                    <select class=\"form-control\" id=\"").concat(field, "\">\n                      <option value=\"\"></option>\n                      ").concat(optionsHtml, "\n                    </select>\n                  </div>");
 
         htmlToInject += _html3;
       } else if (inputList[index][Object.keys(inputList[index])][field] === "DATEONLY") {
-        var _html4 = "<div class=\"form-group\">\n                    <label for=\"".concat(field, "\">").concat(fieldNameMapping[field], ":</label>\n                    <input class=\"datepicker-ui validate form-control\" id=\"").concat(field, "\"/>\n\n                    </div>");
+        var _html4 = "<div class=\"form-group\">\n                    <label for=\"".concat(field, "\">").concat(fieldNameMapping[field]).concat(addAsterisk(field), ":</label>\n                    <input class=\"datepicker-ui validate form-control\" id=\"").concat(field, "\"/>\n\n                    </div>");
 
         htmlToInject += _html4;
       } else if (inputList[index][Object.keys(inputList[index])][field] === "RADIO") {
-        var _html5 = "<div class=\"form-group\">\n                <label for=\"\">".concat(fieldNameMapping[field], "</label>\n                <div class=\"form-check\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"").concat(field, "-yes\" id=\"").concat(field, "-yes\" value=\"TRUE\">\n                <label class=\"form-check-label\" for=\"").concat(field, "\">\n                  Yes\n                </label></div>\n              \n                <div class=\"form-check\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"").concat(field, "-no\" id=\"").concat(field, "-no\" value=\"FALSE\">\n                <label class=\"form-check-label\" for=\"").concat(field, "-no\">\n                  No\n                </label>\n              </div></div>");
+        var _html5 = "<div class=\"form-group\">\n                <label for=\"\">".concat(fieldNameMapping[field]).concat(addAsterisk(field), "</label>\n                <div class=\"form-check\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"").concat(field, "-yes\" id=\"").concat(field, "-yes\" value=\"true\">\n                <label class=\"form-check-label\" for=\"").concat(field, "\">\n                  Yes\n                </label></div>\n              \n                <div class=\"form-check\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"").concat(field, "-no\" id=\"").concat(field, "-no\" value=\"false\">\n                <label class=\"form-check-label\" for=\"").concat(field, "-no\">\n                  No\n                </label>\n              </div></div>");
 
         htmlToInject += _html5;
       } else if (inputList[index][Object.keys(inputList[index])][field] === "MULTISELECT") {
         // Think this is the only multiselect required, if more need to modify
-        var _html6 = "<div class=\"form-group\">\n                <label for=\"".concat(field, "\">").concat(fieldNameMapping[field], "</label>\n                <select multiple class=\"form-control\" id=\"").concat(field, "\">\n                <option value=\"Andy Round\">Andy Round</option>\n                <option value=\"Guy Weaver\">Guy Weaver</option>\n                <option value=\"Jamie Newall\">Jamie Newall</option>\n                <option value=\"Louise Chapman\">Louise Chapman</option>\n                <option value=\"Mark Lyons\">Mark Lyons</option>\n                <option value=\"Myrto Lalacos\">Myrto Lalacos</option>\n                <option value=\"Pete Carway\">Pete Carway</option>     \n                <option value=\"Sim Landa\">Sim Landa</option>\n                </select>\n              </div>");
+        var _html6 = "<div class=\"form-group\">\n                <label for=\"".concat(field, "\">").concat(fieldNameMapping[field]).concat(addAsterisk(field), ":</label>\n                <select multiple class=\"form-control\" id=\"").concat(field, "\">\n                <option value=\"Andy Round\">Andy Round</option>\n                <option value=\"Guy Weaver\">Guy Weaver</option>\n                <option value=\"Jamie Newall\">Jamie Newall</option>\n                <option value=\"Louise Chapman\">Louise Chapman</option>\n                <option value=\"Mark Lyons\">Mark Lyons</option>\n                <option value=\"Myrto Lalacos\">Myrto Lalacos</option>\n                <option value=\"Pete Carway\">Pete Carway</option>     \n                <option value=\"Sim Landa\">Sim Landa</option>\n                </select>\n              </div>");
 
         htmlToInject += _html6;
       } // else if (inputList[index][Object.keys(inputList[index])][field] === "FLOAT") {
@@ -29860,6 +29889,7 @@ function generateStageEightAllocationTable() {
 module.exports.generateHtmlInputs = generateHtmlInputs;
 module.exports.generateStageEightAllocationTable = generateStageEightAllocationTable;
 module.exports.inputList = inputList;
+module.exports.mandatoryFields = mandatoryFields;
 
 /***/ }),
 

@@ -72,14 +72,19 @@ app.get('/opportunity/:opp' , (req, res) => {
     res.sendFile(path.resolve(__dirname,'dist','html','opp.html'));
 })
 
+app.post( '/postOpportunity',async (req,res) => {
+    console.log('end hit for add')
+    let data = req.body;
+    console.log(data)
+    await DbController.createOpportunity(data)
+
+})
+
+app.get( '/summary',(req,res) => {
+    res.sendFile(path.resolve(__dirname,'dist','html','summary.html'))
+})
 
 
-app.get('/', (req,res) => {
-    res.set('content-type', 'text/event-stream');
-    res.send('Hello Worldddd!!');
-    // console.log(path.join(__dirname));
-    // res.sendFile(path.resolve(__dirname,'/auth','/auth.html'));
-});
 
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`);

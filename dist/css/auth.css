@@ -612,6 +612,43 @@ select #filter-input {
 
 }
 
+/*Add Page CSS*/
+#add-title{
+  margin-top: 2rem;
+
+  color: #008cf0;
+}
+
+.content-container {
+  width: 80%;
+  margin: auto;
+}
+
+.red-asterisk {
+  color: red;
+}
+
+.add-btn-container{
+  display: flex;
+  justify-content: flex-end;
+
+  height: 150px;
+  width: 70%;
+  margin: auto;
+}
+
+#add-btn{
+  height: 40px;
+}
+
+.mandatory-msg::after{
+  content: "Please Complete Mandatory Field.";
+  display: block;
+  color: red;
+
+
+}
+
 @media(max-width: 1277px) {
   #bootstrap-override #navbar-container .navbar-links{
     text-align: center;
@@ -670,6 +707,8 @@ select #filter-input {
   #bootstrap-override #navbar-container .navbar-links > a > span {
     width: 0px
   }
+
+
 
 
 }
