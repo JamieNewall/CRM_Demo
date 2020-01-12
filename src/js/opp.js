@@ -137,7 +137,7 @@ function setButtonState(state) {
     if(state === 'Completed') {
         document.getElementById('dropdownMenuButton').remove()
         document.getElementById('edit-btn').remove();
-    } else if (state === 'Monitored') {
+    } else if (state === 'Monitor') {
         document.getElementById('edit-btn').parentNode.remove();
         document.getElementById('monitor-btn').parentNode.remove();
         document.getElementById('proceed-btn').parentNode.remove();
@@ -201,8 +201,8 @@ function moveToMonitor() {
         body:JSON.stringify(data),
         headers: {"Content-Type": "application/json"}}).then(() => {
         // UIController.setFields(nextStage);
-       setButtonState('Monitored')
-        hideModal();
+       hideModal();
+       setButtonState('Monitor')
         let reinstate = document.getElementById('reinstate-btn');
         reinstate.addEventListener('click',reinstateOpp)
 
@@ -256,23 +256,34 @@ function declineOpp() {
 }
 
 function hideModal() {
-   document.querySelectorAll('.modal').forEach((modal) => {
-       modal.style.display = 'none';
-       modal.className = 'modal fade';
-
-   })
-    let backdrop = document.getElementsByClassName('modal-backdrop')[0]
-    backdrop.classList.remove('show');
-    backdrop.style.display = 'none';
-    document.querySelector('body').removeAttribute('class');
-    document.querySelector('body').removeAttribute('style');
+    document.getElementById('monitor-btn-no').click();
+    document.getElementById('decline-btn-no').click();
+    document.getElementById('proceed-no-btn').click();
+    disableFields();
+   // document.querySelectorAll('.modal').forEach((modal) => {
+   //     modal.style.display = 'none';
+   //     modal.className = 'modal fade';
+   //
+   // })
+   //  let backdrop = document.getElementsByClassName('modal-backdrop')[0]
+   //  backdrop.classList.remove('show');
+   //  backdrop.style.display = 'none';
+   //  document.querySelector('body').removeAttribute('class');
+   //  document.querySelector('body').removeAttribute('style');
    }
 
-function proceedToNextStage(currentStage) {
-    console.log(currentStage)
+function getCurrentStage() {
+    let container = document.querySelector('.grid-container');
+    console.log(container.children.length);
+    return container.children.length
+}
+
+function proceedToNextStage() {
+
     let data ={};
     data.one_OppName = document.getElementById('one_OppName').value;
-    let nextStage = (currentStage === 8) ? 8 : currentStage + 1;
+    let nextStage = getCurrentStage()
+
     data.opp_CurrentStage = nextStage;
     console.log(data)
     fetch('/updateOpportunity', {
@@ -280,9 +291,10 @@ function proceedToNextStage(currentStage) {
         body:JSON.stringify(data),
         headers: {"Content-Type": "application/json"}}).then(() => {
             // UIController.setFields(nextStage);
+            hideModal();
             UIController.setFields(nextStage);
             UIController.proceedStage(nextStage);
-            hideModal();
+
     })
         .catch((e) => {
             console.log(e)
@@ -295,10 +307,14 @@ function oppAddEventListeners(data) {
     let monitor = document.getElementById('monitor-btn-yes');
     let decline = document.getElementById('decline-btn-yes');
     let reinstate = document.getElementById('reinstate-btn');
-    proceed.addEventListener('click', proceedToNextStage.bind(null,data.opp_CurrentStage))
+    proceed.addEventListener('click', proceedToNextStage)
     monitor.addEventListener('click',moveToMonitor)
     decline.addEventListener('click', declineOpp)
+    try {
     reinstate.addEventListener('click',reinstateOpp)
+    } catch(e) {
+
+    }
 }
 
 
@@ -323,6 +339,19 @@ function editFields() {
     selectInputs.forEach((select) => {
         select.removeAttribute('disabled');
     })
+}
+
+function editFieldModalSetup() {
+    let monitor = document.getElementById('monitor-btn').parentNode;
+    let decline = document.getElementById('decline-btn').parentNode;
+    monitor.addEventListener('click', () => {
+        editFields()
+        console.log('triggered')
+    })
+    decline.addEventListener('click', () => {
+        editFields()
+    })
+
 }
 
 function editBtnLoad() {
@@ -384,8 +413,11 @@ async function getInitData(){
             editBtnLoad();
             initMultiSelect(opp.two_TeamMembers)
             populateInputs(opp)
+            console.log(opp.opp_Status)
             setButtonState(opp.opp_Status)
-            oppAddEventListeners(opp)
+            oppAddEventListeners(opp);
+            editFieldModalSetup();
+
 
         }).then((data) => {
 

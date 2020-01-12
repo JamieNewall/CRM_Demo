@@ -30102,7 +30102,7 @@ function setButtonState(state) {
   if (state === 'Completed') {
     document.getElementById('dropdownMenuButton').remove();
     document.getElementById('edit-btn').remove();
-  } else if (state === 'Monitored') {
+  } else if (state === 'Monitor') {
     document.getElementById('edit-btn').parentNode.remove();
     document.getElementById('monitor-btn').parentNode.remove();
     document.getElementById('proceed-btn').parentNode.remove();
@@ -30161,8 +30161,8 @@ function moveToMonitor() {
     }
   }).then(function () {
     // UIController.setFields(nextStage);
-    setButtonState('Monitored');
     hideModal();
+    setButtonState('Monitor');
     var reinstate = document.getElementById('reinstate-btn');
     reinstate.addEventListener('click', reinstateOpp);
   })["catch"](function (e) {
@@ -30212,22 +30212,31 @@ function declineOpp() {
 }
 
 function hideModal() {
-  document.querySelectorAll('.modal').forEach(function (modal) {
-    modal.style.display = 'none';
-    modal.className = 'modal fade';
-  });
-  var backdrop = document.getElementsByClassName('modal-backdrop')[0];
-  backdrop.classList.remove('show');
-  backdrop.style.display = 'none';
-  document.querySelector('body').removeAttribute('class');
-  document.querySelector('body').removeAttribute('style');
+  document.getElementById('monitor-btn-no').click();
+  document.getElementById('decline-btn-no').click();
+  document.getElementById('proceed-no-btn').click();
+  disableFields(); // document.querySelectorAll('.modal').forEach((modal) => {
+  //     modal.style.display = 'none';
+  //     modal.className = 'modal fade';
+  //
+  // })
+  //  let backdrop = document.getElementsByClassName('modal-backdrop')[0]
+  //  backdrop.classList.remove('show');
+  //  backdrop.style.display = 'none';
+  //  document.querySelector('body').removeAttribute('class');
+  //  document.querySelector('body').removeAttribute('style');
 }
 
-function proceedToNextStage(currentStage) {
-  console.log(currentStage);
+function getCurrentStage() {
+  var container = document.querySelector('.grid-container');
+  console.log(container.children.length);
+  return container.children.length;
+}
+
+function proceedToNextStage() {
   var data = {};
   data.one_OppName = document.getElementById('one_OppName').value;
-  var nextStage = currentStage === 8 ? 8 : currentStage + 1;
+  var nextStage = getCurrentStage();
   data.opp_CurrentStage = nextStage;
   console.log(data);
   fetch('/updateOpportunity', {
@@ -30238,9 +30247,9 @@ function proceedToNextStage(currentStage) {
     }
   }).then(function () {
     // UIController.setFields(nextStage);
+    hideModal();
     UIController.setFields(nextStage);
     UIController.proceedStage(nextStage);
-    hideModal();
   })["catch"](function (e) {
     console.log(e);
     alert(e);
@@ -30252,10 +30261,13 @@ function oppAddEventListeners(data) {
   var monitor = document.getElementById('monitor-btn-yes');
   var decline = document.getElementById('decline-btn-yes');
   var reinstate = document.getElementById('reinstate-btn');
-  proceed.addEventListener('click', proceedToNextStage.bind(null, data.opp_CurrentStage));
+  proceed.addEventListener('click', proceedToNextStage);
   monitor.addEventListener('click', moveToMonitor);
   decline.addEventListener('click', declineOpp);
-  reinstate.addEventListener('click', reinstateOpp);
+
+  try {
+    reinstate.addEventListener('click', reinstateOpp);
+  } catch (e) {}
 }
 
 function disableFields() {
@@ -30277,6 +30289,18 @@ function editFields() {
   var selectInputs = document.querySelectorAll('select');
   selectInputs.forEach(function (select) {
     select.removeAttribute('disabled');
+  });
+}
+
+function editFieldModalSetup() {
+  var monitor = document.getElementById('monitor-btn').parentNode;
+  var decline = document.getElementById('decline-btn').parentNode;
+  monitor.addEventListener('click', function () {
+    editFields();
+    console.log('triggered');
+  });
+  decline.addEventListener('click', function () {
+    editFields();
   });
 }
 
@@ -30355,8 +30379,10 @@ function _getInitData() {
               editBtnLoad();
               initMultiSelect(opp.two_TeamMembers);
               populateInputs(opp);
+              console.log(opp.opp_Status);
               setButtonState(opp.opp_Status);
               oppAddEventListeners(opp);
+              editFieldModalSetup();
             }).then(function (data) {});
 
           case 6:
