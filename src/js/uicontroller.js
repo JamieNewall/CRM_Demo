@@ -4,8 +4,28 @@ class UIController {
     return opportunity.stage
   }
 
+  static proceedStage(nextStage) {
+    if (nextStage >= 8) {
+      return
+    }
+    let container = document.getElementsByClassName('grid-container')[0];
+    let html = `<div class="pv-circle"> 
+      <span class="node-number" id="circle-${nextStage}">${nextStage}</span>    
+      </div>`
+    let wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
+    container.appendChild(wrapper.firstChild)
+    container.children[container.children.length - 2].style.background = '#03ceab'
+    container.children[container.children.length - 1].style.background = '#008cf0'
+    UIController.loadEventListeners();
+  }
+
   // sets PV circles on load
   static setLoadState(stage) {
+    // //
+    // if(stage === 0) {
+    //   stage = 1;
+    // }
     let container = document.getElementsByClassName('grid-container')[0];
     // Set Grid
     if (stage <= 4) {
@@ -41,6 +61,10 @@ class UIController {
 
     let fields = document.querySelectorAll('.field-set');
     fields.forEach((field) => {
+      // set stage zero to 1
+      if(stage === 0 ) {
+        stage = 1;
+      }
       if (field.id === `stage-${stage}-fields`) {
         field.style.display = "grid";
       } else {
@@ -57,14 +81,15 @@ class UIController {
   }
 
   static setFields(stage) {
+
     let fieldSets = document.querySelectorAll('.field-set');
 
     fieldSets.forEach((field, index) => {
       // console.log(field.id,index);
-      if (stage === 0) {
-        stage = 1
-      }
-      if (field.id === `stage-${stage}-fields`) {
+      //set stage to 1 if stage 0
+      let setStage = (stage == 0) ? 1 : stage;
+      console.log(setStage)
+      if (field.id === `stage-${setStage}-fields`) {
         field.style.display = "grid";
       } else {
         field.style.display = 'none';

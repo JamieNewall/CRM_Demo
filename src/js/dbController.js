@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 const excel = require('xlsx');
 const dataBase = require('../../util/database');
 const DB = dataBase.opportunity;
-
+const moment = require('moment');
+const typeMapping = dataBase.typeMapping;
 
 
 // const data = require('../../util/getExcel.js');
@@ -238,10 +239,52 @@ class dbController {
         }
 
         static createOpportunity(data) {
+        console.log(data, typeof data)
+            for (let key in data) {
+                if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(data[key])) {
+                    data[key] = moment(data[key], "DD-MM-YYYY")
+                }
+            }
 
             DB.create(data).then((res) => console.log(`entry added ${res}`)).catch((err) => {console.log(err)})
 
         }
+
+        static updateOpportunity(data) {
+            console.log(data)
+            let opp = DB.findOne({where: {one_OppName:data.one_OppName}})
+                .then((opp) => {
+                    console.log(opp)
+                    for (let key in data) {
+                        if (data[key] == null || data[key] == 'Invalid date' ) {
+                            opp[key] = null;
+                        } else if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(data[key])) {
+                            // let date;
+                            // if (moment(data[key], "DD-MM-YYYY") == 'Invalid date') {
+                            //     date = null;
+                            //     console.log('invalid date hit')
+                            // } else {
+                            //     date = moment(data[key], "DD-MM-YYYY")
+                            // }
+                            opp[key] = moment(data[key], "DD-MM-YYYY")
+                            // opp[key] = date;
+                        } else {
+                            opp[key] = data[key]
+                        }
+                    }
+                    return opp.save();
+
+                }).then((msg) => {
+                    console.log('Opp Updated!')
+                }).catch((e) => {
+                    console.log('error here')
+                    console.log(e)})
+
+
+
+
+        };
+
 
 
 }

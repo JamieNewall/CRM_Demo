@@ -136,10 +136,23 @@ function setButtonState(state) {
 
     if(state === 'Completed') {
         document.getElementById('dropdownMenuButton').remove()
+        document.getElementById('edit-btn').remove();
     } else if (state === 'Monitored') {
-    //    TODO to complete
+        document.getElementById('edit-btn').parentNode.remove();
+        document.getElementById('monitor-btn').parentNode.remove();
+        document.getElementById('proceed-btn').parentNode.remove();
+        let container = document.querySelector('.dropdown-menu');
+        let wrapper = document.createElement('div');
+        wrapper.innerHTML = `<a class="dropdown-item" href="#">
+            <button type="button" id="reinstate-btn" class="btn">
+            Reinstate Opportunity
+        </button></a>`;
+        // let html = wrapper.childNodes;
+        // console.log(wrapper)
+        container.insertBefore(wrapper.firstChild,container.children[0])
     } else if (state === 'Declined') {
-        document.getElementById('dropdownMenuButton').remove()
+        document.getElementById('dropdownMenuButton').remove();
+        document.getElementById('edit-btn').remove();
     }
 }
 
@@ -148,19 +161,21 @@ function populateInputs(data) {
     for (let prop in data) {
         if(typeMapping[prop] === 'DATEONLY') {
             moment.locale('en-gb')
-            data[prop] = moment(data[prop]).format('L');
+            data[prop] = moment(data[prop]).format('DD/MM/YYYY');
         } if(typeMapping[prop] === 'FLOAT') {
             if(data[prop] < 1) {
-                data[prop] = data[prop] * 100;
+                data[prop] = (data[prop] * 100).toFixed(2);
             } else {
             // console.log(data[prop], prop)
             }
         } if(typeMapping[prop] === 'BOOLEAN') {
-            // if (data[prop] === 'Yes' || data[prop] === 'true') {
-            //
-            // }
-            // console.log(data[prop],prop)
-            // data[prop] = numeral(data[prop]).format('0,0');
+            if (data[prop] === 'Yes' || data[prop] === 'true' || data[prop] === 'yes') {
+                document.getElementById(`${prop}-yes`).checked = true;
+            } else if (data[prop] === 'No' || data[prop] === 'false'|| data[prop] === 'no') {
+                document.getElementById(`${prop}-no`).checked = true;
+            }
+
+
         }
 
 
@@ -174,22 +189,172 @@ function populateInputs(data) {
     }
 }
 
+function moveToMonitor() {
 
-import uicontroller from "./uicontroller";
-// const materialize = require('materialize-css/dist/css/materialize.min.css');
-// // // const bootstrapCSS = require('bootstrap/dist/css/bootstrap.min.css');
-// const materializeJS = require('materialize-css/dist/js/materialize.min.js');
+    let data ={};
+    data.one_OppName = document.getElementById('one_OppName').value;
+
+    data.opp_Status = 'Monitor'
+
+    fetch('/updateOpportunity', {
+        method: 'POST',
+        body:JSON.stringify(data),
+        headers: {"Content-Type": "application/json"}}).then(() => {
+        // UIController.setFields(nextStage);
+       setButtonState('Monitored')
+        hideModal();
+        let reinstate = document.getElementById('reinstate-btn');
+        reinstate.addEventListener('click',reinstateOpp)
+
+
+    })
+        .catch((e) => {
+            console.log(e)
+            alert(e)
+        })
+}
+
+function reinstateOpp() {
+    let data ={};
+    data.one_OppName = document.getElementById('one_OppName').value;
+
+    data.opp_Status = 'Active'
+
+    fetch('/updateOpportunity', {
+        method: 'POST',
+        body:JSON.stringify(data),
+        headers: {"Content-Type": "application/json"}}).then(() => {
+        // UIController.setFields(nextStage);
+
+        hideModal();
+        location.reload();
+    })
+        .catch((e) => {
+            console.log(e)
+            alert(e)
+        })
+}
+
+function declineOpp() {
+    let data ={};
+    data.one_OppName = document.getElementById('one_OppName').value;
+
+    data.opp_Status = 'Declined'
+
+    fetch('/updateOpportunity', {
+        method: 'POST',
+        body:JSON.stringify(data),
+        headers: {"Content-Type": "application/json"}}).then(() => {
+        // UIController.setFields(nextStage);
+        setButtonState('Declined')
+        hideModal();
+    })
+        .catch((e) => {
+            console.log(e)
+            alert(e)
+        })
+}
+
+function hideModal() {
+   document.querySelectorAll('.modal').forEach((modal) => {
+       modal.style.display = 'none';
+       modal.className = 'modal fade';
+
+   })
+    let backdrop = document.getElementsByClassName('modal-backdrop')[0]
+    backdrop.classList.remove('show');
+    backdrop.style.display = 'none';
+    document.querySelector('body').removeAttribute('class');
+    document.querySelector('body').removeAttribute('style');
+   }
+
+function proceedToNextStage(currentStage) {
+    console.log(currentStage)
+    let data ={};
+    data.one_OppName = document.getElementById('one_OppName').value;
+    let nextStage = (currentStage === 8) ? 8 : currentStage + 1;
+    data.opp_CurrentStage = nextStage;
+    console.log(data)
+    fetch('/updateOpportunity', {
+        method: 'POST',
+        body:JSON.stringify(data),
+        headers: {"Content-Type": "application/json"}}).then(() => {
+            // UIController.setFields(nextStage);
+            UIController.setFields(nextStage);
+            UIController.proceedStage(nextStage);
+            hideModal();
+    })
+        .catch((e) => {
+            console.log(e)
+            alert(e)
+        })
+}
+
+function oppAddEventListeners(data) {
+    let proceed = document.getElementById('proceed-yes-btn');
+    let monitor = document.getElementById('monitor-btn-yes');
+    let decline = document.getElementById('decline-btn-yes');
+    let reinstate = document.getElementById('reinstate-btn');
+    proceed.addEventListener('click', proceedToNextStage.bind(null,data.opp_CurrentStage))
+    monitor.addEventListener('click',moveToMonitor)
+    decline.addEventListener('click', declineOpp)
+    reinstate.addEventListener('click',reinstateOpp)
+}
+
 
 function disableFields() {
-    let inputs = document.querySelectorAll('input');
+    let inputs = document.querySelectorAll('input , textarea');
     inputs.forEach((input) => {
-        input.setAttribute('readonly','');
+        input.setAttribute('disabled','true');
     })
     let selectInputs = document.querySelectorAll('select');
     selectInputs.forEach((select) => {
         select.setAttribute('disabled','');
     })
 
+}
+
+function editFields() {
+    let inputs = document.querySelectorAll('input , textarea');
+    inputs.forEach((input) => {
+        input.removeAttribute('disabled');
+    })
+    let selectInputs = document.querySelectorAll('select');
+    selectInputs.forEach((select) => {
+        select.removeAttribute('disabled');
+    })
+}
+
+function editBtnLoad() {
+    let btn = document.getElementById('edit-btn');
+    btn.addEventListener('click', (e) => {
+        if (e.target.textContent === 'Edit'){
+            e.target.textContent = 'Save';
+            editFields();
+         } else {
+            e.target.textContent = 'Edit'
+            disableFields();
+            let data = {};
+            let inputs = document.querySelectorAll('input , select, textarea');
+            inputs.forEach((input) => {
+                if (input.value ==="") {
+                    data[input.id] = null;
+                } else {
+                    data[input.id] = input.value;
+                }})
+            console.log(data);
+            fetch('/updateOpportunity', {
+                method: 'POST',
+                body:JSON.stringify(data),
+                headers: {"Content-Type": "application/json"}}).then()
+                    .catch((e) => {
+                        console.log(e)
+                        alert(e)
+                    })
+            }
+
+        }
+)
 }
 
 
@@ -216,11 +381,15 @@ async function getInitData(){
             UIController.setFields(opp.opp_CurrentStage);
             UIController.loadEventListeners();
             disableFields();
+            editBtnLoad();
             initMultiSelect(opp.two_TeamMembers)
             populateInputs(opp)
             setButtonState(opp.opp_Status)
+            oppAddEventListeners(opp)
 
-        });
+        }).then((data) => {
+
+    })
 
 }
 

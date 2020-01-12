@@ -29469,9 +29469,7 @@ var sectors = ["Advertising, Marketing and Publishing", "Aerospace, Defence and 
 var investmentStage = ["Seed", "Early VC"]; //List of inputs to be created
 
 var inputList = [{
-  0: {
-    one_OppName: "STRING"
-  }
+  0: {}
 }, {
   1: {
     one_OppName: "STRING",
@@ -29907,8 +29905,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/bootstrap.min.css */ "./src/assets/bootstrap.min.css");
 /* harmony import */ var _assets_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_assets_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _assets_img_Praetura_Ventures_logo_white_rgb_small1_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/img/Praetura-Ventures-logo_white_rgb_small1.png */ "./src/assets/img/Praetura-Ventures-logo_white_rgb_small1.png");
-/* harmony import */ var _uicontroller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./uicontroller */ "./src/js/uicontroller.js");
-/* harmony import */ var _uicontroller__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_uicontroller__WEBPACK_IMPORTED_MODULE_3__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -30105,9 +30101,20 @@ function initMultiSelect(people) {
 function setButtonState(state) {
   if (state === 'Completed') {
     document.getElementById('dropdownMenuButton').remove();
-  } else if (state === 'Monitored') {//    TODO to complete
+    document.getElementById('edit-btn').remove();
+  } else if (state === 'Monitored') {
+    document.getElementById('edit-btn').parentNode.remove();
+    document.getElementById('monitor-btn').parentNode.remove();
+    document.getElementById('proceed-btn').parentNode.remove();
+    var container = document.querySelector('.dropdown-menu');
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = "<a class=\"dropdown-item\" href=\"#\">\n            <button type=\"button\" id=\"reinstate-btn\" class=\"btn\">\n            Reinstate Opportunity\n        </button></a>"; // let html = wrapper.childNodes;
+    // console.log(wrapper)
+
+    container.insertBefore(wrapper.firstChild, container.children[0]);
   } else if (state === 'Declined') {
     document.getElementById('dropdownMenuButton').remove();
+    document.getElementById('edit-btn').remove();
   }
 }
 
@@ -30115,22 +30122,23 @@ function populateInputs(data) {
   for (var prop in data) {
     if (typeMapping[prop] === 'DATEONLY') {
       moment.locale('en-gb');
-      data[prop] = moment(data[prop]).format('L');
+      data[prop] = moment(data[prop]).format('DD/MM/YYYY');
     }
 
     if (typeMapping[prop] === 'FLOAT') {
       if (data[prop] < 1) {
-        data[prop] = data[prop] * 100;
+        data[prop] = (data[prop] * 100).toFixed(2);
       } else {// console.log(data[prop], prop)
       }
     }
 
-    if (typeMapping[prop] === 'BOOLEAN') {} // if (data[prop] === 'Yes' || data[prop] === 'true') {
-    //
-    // }
-    // console.log(data[prop],prop)
-    // data[prop] = numeral(data[prop]).format('0,0');
-    // console.log(typeof data[prop], data[prop] , prop)
+    if (typeMapping[prop] === 'BOOLEAN') {
+      if (data[prop] === 'Yes' || data[prop] === 'true' || data[prop] === 'yes') {
+        document.getElementById("".concat(prop, "-yes")).checked = true;
+      } else if (data[prop] === 'No' || data[prop] === 'false' || data[prop] === 'no') {
+        document.getElementById("".concat(prop, "-no")).checked = true;
+      }
+    } // console.log(typeof data[prop], data[prop] , prop)
 
 
     var input = document.getElementById(prop); // console.log(input, data[prop])
@@ -30141,18 +30149,167 @@ function populateInputs(data) {
   }
 }
 
- // const materialize = require('materialize-css/dist/css/materialize.min.css');
-// // // const bootstrapCSS = require('bootstrap/dist/css/bootstrap.min.css');
-// const materializeJS = require('materialize-css/dist/js/materialize.min.js');
+function moveToMonitor() {
+  var data = {};
+  data.one_OppName = document.getElementById('one_OppName').value;
+  data.opp_Status = 'Monitor';
+  fetch('/updateOpportunity', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(function () {
+    // UIController.setFields(nextStage);
+    setButtonState('Monitored');
+    hideModal();
+    var reinstate = document.getElementById('reinstate-btn');
+    reinstate.addEventListener('click', reinstateOpp);
+  })["catch"](function (e) {
+    console.log(e);
+    alert(e);
+  });
+}
+
+function reinstateOpp() {
+  var data = {};
+  data.one_OppName = document.getElementById('one_OppName').value;
+  data.opp_Status = 'Active';
+  fetch('/updateOpportunity', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(function () {
+    // UIController.setFields(nextStage);
+    hideModal();
+    location.reload();
+  })["catch"](function (e) {
+    console.log(e);
+    alert(e);
+  });
+}
+
+function declineOpp() {
+  var data = {};
+  data.one_OppName = document.getElementById('one_OppName').value;
+  data.opp_Status = 'Declined';
+  fetch('/updateOpportunity', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(function () {
+    // UIController.setFields(nextStage);
+    setButtonState('Declined');
+    hideModal();
+  })["catch"](function (e) {
+    console.log(e);
+    alert(e);
+  });
+}
+
+function hideModal() {
+  document.querySelectorAll('.modal').forEach(function (modal) {
+    modal.style.display = 'none';
+    modal.className = 'modal fade';
+  });
+  var backdrop = document.getElementsByClassName('modal-backdrop')[0];
+  backdrop.classList.remove('show');
+  backdrop.style.display = 'none';
+  document.querySelector('body').removeAttribute('class');
+  document.querySelector('body').removeAttribute('style');
+}
+
+function proceedToNextStage(currentStage) {
+  console.log(currentStage);
+  var data = {};
+  data.one_OppName = document.getElementById('one_OppName').value;
+  var nextStage = currentStage === 8 ? 8 : currentStage + 1;
+  data.opp_CurrentStage = nextStage;
+  console.log(data);
+  fetch('/updateOpportunity', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(function () {
+    // UIController.setFields(nextStage);
+    UIController.setFields(nextStage);
+    UIController.proceedStage(nextStage);
+    hideModal();
+  })["catch"](function (e) {
+    console.log(e);
+    alert(e);
+  });
+}
+
+function oppAddEventListeners(data) {
+  var proceed = document.getElementById('proceed-yes-btn');
+  var monitor = document.getElementById('monitor-btn-yes');
+  var decline = document.getElementById('decline-btn-yes');
+  var reinstate = document.getElementById('reinstate-btn');
+  proceed.addEventListener('click', proceedToNextStage.bind(null, data.opp_CurrentStage));
+  monitor.addEventListener('click', moveToMonitor);
+  decline.addEventListener('click', declineOpp);
+  reinstate.addEventListener('click', reinstateOpp);
+}
 
 function disableFields() {
-  var inputs = document.querySelectorAll('input');
+  var inputs = document.querySelectorAll('input , textarea');
   inputs.forEach(function (input) {
-    input.setAttribute('readonly', '');
+    input.setAttribute('disabled', 'true');
   });
   var selectInputs = document.querySelectorAll('select');
   selectInputs.forEach(function (select) {
     select.setAttribute('disabled', '');
+  });
+}
+
+function editFields() {
+  var inputs = document.querySelectorAll('input , textarea');
+  inputs.forEach(function (input) {
+    input.removeAttribute('disabled');
+  });
+  var selectInputs = document.querySelectorAll('select');
+  selectInputs.forEach(function (select) {
+    select.removeAttribute('disabled');
+  });
+}
+
+function editBtnLoad() {
+  var btn = document.getElementById('edit-btn');
+  btn.addEventListener('click', function (e) {
+    if (e.target.textContent === 'Edit') {
+      e.target.textContent = 'Save';
+      editFields();
+    } else {
+      e.target.textContent = 'Edit';
+      disableFields();
+      var data = {};
+      var inputs = document.querySelectorAll('input , select, textarea');
+      inputs.forEach(function (input) {
+        if (input.value === "") {
+          data[input.id] = null;
+        } else {
+          data[input.id] = input.value;
+        }
+      });
+      console.log(data);
+      fetch('/updateOpportunity', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then()["catch"](function (e) {
+        console.log(e);
+        alert(e);
+      });
+    }
   });
 }
 
@@ -30195,10 +30352,12 @@ function _getInitData() {
               UIController.setFields(opp.opp_CurrentStage);
               UIController.loadEventListeners();
               disableFields();
+              editBtnLoad();
               initMultiSelect(opp.two_TeamMembers);
               populateInputs(opp);
               setButtonState(opp.opp_Status);
-            });
+              oppAddEventListeners(opp);
+            }).then(function (data) {});
 
           case 6:
             data = _context.sent;
@@ -30247,8 +30406,7 @@ function () {
     key: "getStage",
     value: function getStage(opportunity) {
       return opportunity.stage;
-    } // sets PV circles on load
-
+    }
   }, {
     key: "getState",
     value: function getState() {}
@@ -30264,8 +30422,29 @@ function () {
     key: "setStageUiState",
     value: function setStageUiState(stage) {}
   }], [{
+    key: "proceedStage",
+    value: function proceedStage(nextStage) {
+      if (nextStage >= 8) {
+        return;
+      }
+
+      var container = document.getElementsByClassName('grid-container')[0];
+      var html = "<div class=\"pv-circle\"> \n      <span class=\"node-number\" id=\"circle-".concat(nextStage, "\">").concat(nextStage, "</span>    \n      </div>");
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = html;
+      container.appendChild(wrapper.firstChild);
+      container.children[container.children.length - 2].style.background = '#03ceab';
+      container.children[container.children.length - 1].style.background = '#008cf0';
+      UIController.loadEventListeners();
+    } // sets PV circles on load
+
+  }, {
     key: "setLoadState",
     value: function setLoadState(stage) {
+      // //
+      // if(stage === 0) {
+      //   stage = 1;
+      // }
       var container = document.getElementsByClassName('grid-container')[0]; // Set Grid
 
       if (stage <= 4) {
@@ -30295,6 +30474,11 @@ function () {
       });
       var fields = document.querySelectorAll('.field-set');
       fields.forEach(function (field) {
+        // set stage zero to 1
+        if (stage === 0) {
+          stage = 1;
+        }
+
         if (field.id === "stage-".concat(stage, "-fields")) {
           field.style.display = "grid";
         } else {
@@ -30308,11 +30492,11 @@ function () {
       var fieldSets = document.querySelectorAll('.field-set');
       fieldSets.forEach(function (field, index) {
         // console.log(field.id,index);
-        if (stage === 0) {
-          stage = 1;
-        }
+        //set stage to 1 if stage 0
+        var setStage = stage == 0 ? 1 : stage;
+        console.log(setStage);
 
-        if (field.id === "stage-".concat(stage, "-fields")) {
+        if (field.id === "stage-".concat(setStage, "-fields")) {
           field.style.display = "grid";
         } else {
           field.style.display = 'none';

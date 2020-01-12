@@ -31,7 +31,7 @@ const sectors = ["Advertising, Marketing and Publishing","Aerospace, Defence and
 const investmentStage = ["Seed", "Early VC"];
 
 //List of inputs to be created
-const inputList = [{0:{one_OppName:"STRING"}},{1:{one_OppName:"STRING",
+const inputList = [{0:{}},{1:{one_OppName:"STRING",
     one_PvLead:investmentTeam,one_IntroDate:"DATEONLY",one_Introducer:leadSource,one_Referrer:venturePartners,
     one_InvestmentAmount:"INTEGER",one_PreMoney:"INTEGER",one_TotalInvestment:"INTEGER",one_EquityPercentage:"FLOAT",
     one_Location:"STRING",one_Sector:sectors,one_InvestmentStage:investmentStage,one_InvestmentToDate:"INTEGER",

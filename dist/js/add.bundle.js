@@ -10807,6 +10807,8 @@ var bootstrap = __webpack_require__(/*! bootstrap/dist/js/bootstrap.bundle.min *
 
 var inputController = __webpack_require__(/*! ./inputController */ "./src/js/inputController.js");
 
+var uiController = __webpack_require__(/*! ./uicontroller */ "./src/js/uicontroller.js");
+
 var mandatoryFields = inputController.mandatoryFields; //Get stage one fields
 
 var inputList = inputController.inputList[1];
@@ -10861,11 +10863,9 @@ function _checkMandatoryHandler() {
             ans = promise.then(function (data) {
               return data;
             });
-            console.log('await point');
-            console.log(ans);
             return _context2.abrupt("return", ans);
 
-          case 4:
+          case 2:
           case "end":
             return _context2.stop();
         }
@@ -10876,6 +10876,7 @@ function _checkMandatoryHandler() {
 }
 
 document.querySelector('#navbar-logo').src = _assets_img_Praetura_Ventures_logo_white_rgb_small1_png__WEBPACK_IMPORTED_MODULE_2__["default"];
+uiController.loadEventListeners();
 inputController.generateHtmlInputs(inputArr);
 document.getElementById('add-btn').addEventListener('click',
 /*#__PURE__*/
@@ -10897,11 +10898,10 @@ function () {
             _context.t0 = _context.sent;
 
             if (!(_context.t0 === true)) {
-              _context.next = 15;
+              _context.next = 13;
               break;
             }
 
-            console.log('true hit');
             data = {};
             inputs = document.querySelectorAll('input , select');
             inputs.forEach(function (input) {
@@ -10919,15 +10919,18 @@ function () {
               }
             }).then()["catch"](function (e) {
               console.log(e);
+              alert(e);
             });
-            console.log('add href');
             addBtn = document.getElementById('add-link');
-            addBtn.setAttribute('href', '/summary');
+            addBtn.setAttribute('href', '/html/summary.html');
             addBtn.click();
-            _context.next = 15;
+            _context.next = 14;
             break;
 
-          case 15:
+          case 13:
+            alert('Something went wrong!');
+
+          case 14:
           case "end":
             return _context.stop();
         }
@@ -10969,9 +10972,7 @@ var sectors = ["Advertising, Marketing and Publishing", "Aerospace, Defence and 
 var investmentStage = ["Seed", "Early VC"]; //List of inputs to be created
 
 var inputList = [{
-  0: {
-    one_OppName: "STRING"
-  }
+  0: {}
 }, {
   1: {
     one_OppName: "STRING",
@@ -11390,6 +11391,299 @@ module.exports.generateHtmlInputs = generateHtmlInputs;
 module.exports.generateStageEightAllocationTable = generateStageEightAllocationTable;
 module.exports.inputList = inputList;
 module.exports.mandatoryFields = mandatoryFields;
+
+/***/ }),
+
+/***/ "./src/js/uicontroller.js":
+/*!********************************!*\
+  !*** ./src/js/uicontroller.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var UIController =
+/*#__PURE__*/
+function () {
+  function UIController() {
+    _classCallCheck(this, UIController);
+  }
+
+  _createClass(UIController, [{
+    key: "getStage",
+    value: function getStage(opportunity) {
+      return opportunity.stage;
+    }
+  }, {
+    key: "getState",
+    value: function getState() {}
+  }, {
+    key: "addNumberNode",
+    // static mobileMenuAnimation() {
+    //   let mobileMenu = document.querySelector('#mobile-menu');
+    //   console.log(mobileMenu.childNodes);
+    //
+    // }
+    value: function addNumberNode(stage) {}
+  }, {
+    key: "setStageUiState",
+    value: function setStageUiState(stage) {}
+  }], [{
+    key: "proceedStage",
+    value: function proceedStage(nextStage) {
+      if (nextStage >= 8) {
+        return;
+      }
+
+      var container = document.getElementsByClassName('grid-container')[0];
+      var html = "<div class=\"pv-circle\"> \n      <span class=\"node-number\" id=\"circle-".concat(nextStage, "\">").concat(nextStage, "</span>    \n      </div>");
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = html;
+      container.appendChild(wrapper.firstChild);
+      container.children[container.children.length - 2].style.background = '#03ceab';
+      container.children[container.children.length - 1].style.background = '#008cf0';
+      UIController.loadEventListeners();
+    } // sets PV circles on load
+
+  }, {
+    key: "setLoadState",
+    value: function setLoadState(stage) {
+      // //
+      // if(stage === 0) {
+      //   stage = 1;
+      // }
+      var container = document.getElementsByClassName('grid-container')[0]; // Set Grid
+
+      if (stage <= 4) {
+        container.style.gridTemplateColumns = "repeat(auto-fill, minmax(200px,1fr)";
+      } else {
+        container.style.gridTemplateColumns = "repeat(auto-fit, minmax(70px,1fr)";
+      } // Add circles
+
+
+      var html = '';
+      var i;
+
+      for (i = 0; i <= stage; i++) {
+        html += "<div class=\"pv-circle\"> \n      <span class=\"node-number\" id=\"circle-".concat(i, "\">").concat(i, "</span>    \n      </div>");
+      }
+
+      container.innerHTML = html;
+      var selector = "#circle-".concat(stage);
+      document.querySelector(selector).parentNode.style.background = '#008cf0'; // Color Circles
+
+      var circles = document.querySelectorAll('pv-circle'); // convert html collecton to aray
+
+      circles.forEach(function (elem, index) {
+        if (elem.children.item(0).id === "circle-".concat(stage)) {
+          elem.style.background = '#008cf0';
+        }
+      });
+      var fields = document.querySelectorAll('.field-set');
+      fields.forEach(function (field) {
+        // set stage zero to 1
+        if (stage === 0) {
+          stage = 1;
+        }
+
+        if (field.id === "stage-".concat(stage, "-fields")) {
+          field.style.display = "grid";
+        } else {
+          field.style.display = 'none';
+        }
+      });
+    }
+  }, {
+    key: "setFields",
+    value: function setFields(stage) {
+      var fieldSets = document.querySelectorAll('.field-set');
+      fieldSets.forEach(function (field, index) {
+        // console.log(field.id,index);
+        //set stage to 1 if stage 0
+        var setStage = stage == 0 ? 1 : stage;
+        console.log(setStage);
+
+        if (field.id === "stage-".concat(setStage, "-fields")) {
+          field.style.display = "grid";
+        } else {
+          field.style.display = 'none';
+        }
+      });
+    }
+  }, {
+    key: "radioButtonState",
+    value: function radioButtonState(e) {
+      var targetId = e.target.id;
+      var siblingId = "";
+
+      if (targetId.includes("yes")) {
+        siblingId = targetId.replace("yes", "no");
+      } else {
+        siblingId = targetId.replace("no", "yes");
+      }
+
+      document.getElementById(siblingId).removeAttribute("checked");
+      document.getElementById(siblingId).checked = false;
+      document.getElementById(targetId).setAttribute("checked", "checked");
+    }
+  }, {
+    key: "loadEventListeners",
+    value: function loadEventListeners() {
+      var _this = this;
+
+      var circles = document.querySelectorAll('.pv-circle');
+      circles.forEach(function (circle) {
+        circle.addEventListener('click', function (e) {
+          var circles = document.querySelectorAll('.pv-circle');
+          var stage;
+          circles.forEach(function (circle) {
+            return circle.style.background = '#03ceab';
+          });
+
+          if (e.target.tagName === 'SPAN') {
+            e.target.parentNode.style.background = '#008cf0';
+            console.log(e.target.innerHTML);
+            stage = e.target.innerHTML;
+          } else {
+            e.target.style.background = '#008cf0';
+            console.log(e.target.children[0].innerHTML);
+            stage = e.target.children[0].innerHTML;
+          }
+
+          _this.setFields(stage);
+        });
+      });
+      var mobileMenu = document.querySelector('#mobile-menu');
+      mobileMenu.addEventListener('click', this.toggleMobileMenu);
+      var radioBtns = document.querySelectorAll('.form-check-input');
+      radioBtns.forEach(function (btn) {
+        btn.addEventListener('click', _this.radioButtonState);
+      }); // mobileMenu.addEventListener("mouseover", this.mobileMenuAnimation)
+    }
+  }, {
+    key: "toggleMobileMenu",
+    value: function toggleMobileMenu() {
+      var mobileMenu = document.querySelector('.mobile-menu-dropdown');
+      console.log('running');
+
+      if (mobileMenu.style.display === "none") {
+        mobileMenu.style.display = "block";
+      } else {
+        mobileMenu.style.display = "none";
+      }
+    }
+  }, {
+    key: "buildSummaryTable",
+    value: function buildSummaryTable(data) {
+      document.querySelectorAll('.summary-row').forEach(function (row) {
+        return row.remove();
+      });
+      console.log('start build summary table');
+      var table = document.getElementById("summary-table");
+      var html = '';
+      var lengthOf = data.length;
+      data.forEach(function (row, index) {
+        if (row.one_OppName === undefined) {} else {
+          var url = row.one_OppName.trim().split(' ').join('_');
+          html += "\n\n        <tr id=\"row-".concat(row.one_OppName, "\" class=\"summary-row \">\n        \n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_OppName, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.opp_CurrentStage, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_PvLead, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_InvestmentAmount, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.one_Location, "</a></td>\n        <td class=\"table-entry\"><a href=\"/opportunity/").concat(url, "}\">").concat(row.opp_Status, "</a></td>\n       \n      </tr>\n        ");
+        }
+      });
+      table.innerHTML = html;
+      this.createPagination(lengthOf);
+      console.log('end build summary table');
+    }
+  }, {
+    key: "displayRows",
+    value: function displayRows(endIndex) {
+      var rows = document.querySelectorAll('.summary-row');
+      var begIndex = endIndex === 0 ? 0 : endIndex * 25 - 25;
+      var finishIndex = begIndex === 0 ? 25 : endIndex * 25;
+      console.log(begIndex, finishIndex);
+      rows.forEach(function (row, index) {
+        if (begIndex <= index && index < finishIndex) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+  }, {
+    key: "buildTable",
+    value: function () {
+      var _buildTable = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
+
+        var data;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch('/getData').then(function (res) {
+                  return res.json();
+                }).then(function (res) {
+                  _this2.buildSummaryTable(res);
+                }).then(function () {
+                  return console.log('build table done');
+                })["catch"](function (err) {
+                  return console.log(err);
+                });
+
+              case 2:
+                data = _context.sent;
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function buildTable() {
+        return _buildTable.apply(this, arguments);
+      }
+
+      return buildTable;
+    }()
+  }, {
+    key: "createPagination",
+    value: function createPagination(length) {
+      var pagination = document.querySelector('.pagination');
+      var backBtn = document.querySelector('.pagination-back');
+      var numberOfButtons = Math.ceil(length / 50);
+      var html = '';
+      document.querySelectorAll('.pagination-link').forEach(function (node) {
+        return node.remove();
+      });
+
+      for (var i = 1; i <= numberOfButtons; i++) {
+        if (i === 1) {
+          html += "<li class=\"page-item pagination-link added-pagination active\" ><a class=\"page-link\" href=\"\">".concat(i, "</a></li>");
+        } else {
+          html += "<li class=\"page-item pagination-link\" ><a class=\"page-link added-pagination\" href=\"\">".concat(i, "</a></li>");
+        }
+      }
+
+      backBtn.parentNode.insertBefore(document.createRange().createContextualFragment(html), backBtn.nextSibling);
+    }
+  }]);
+
+  return UIController;
+}();
+
+module.exports = UIController;
 
 /***/ })
 

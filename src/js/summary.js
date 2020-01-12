@@ -32,7 +32,7 @@ function getState() {
 }
 
 function paginationHandler() {
-    //TODO need to finish back and next btns
+
     let paginationLinks = document.querySelectorAll('.added-pagination')
     paginationLinks.forEach((link) => {
         link.addEventListener('click', (e) => {
@@ -94,7 +94,7 @@ function paginationHandler() {
 
 
 function addFilterEventListeners() {
-     console.log('addEvent listeners')
+
     let filters = document.querySelectorAll('select');
     filters.forEach((filter) => {
         filter.addEventListener('change',(e) =>{
@@ -118,15 +118,15 @@ function addFilterEventListeners() {
         let tableEntries = document.querySelectorAll('.summary-row');
         let page = document.querySelector('.pagination li.active').textContent;
         UIController.displayRows(page)
-
-        let testEntries =[];
-        tableEntries.forEach((entry) => {
-            if (entry.style.display === 'table-row') {
-                testEntries.push(entry)
-            }
-        })
+        //makes pagination strict
+        // let testEntries =[];
+        // tableEntries.forEach((entry) => {
+        //     if (entry.style.display === 'table-row') {
+        //         testEntries.push(entry)
+        //     }
+        // })
         let searchVal = document.querySelector('#search-input').value.toLowerCase();
-        testEntries.forEach((row) => {
+        tableEntries.forEach((row) => {
             if (row.textContent.toLowerCase().includes(searchVal)) {
                 row.style.display = 'table-row';
             } else {

@@ -76,8 +76,19 @@ app.post( '/postOpportunity',async (req,res) => {
     console.log('end hit for add')
     let data = req.body;
     console.log(data)
+    data.opp_CurrentStage = 0;
+    data.opp_Status = 'Active'
     await DbController.createOpportunity(data)
+    res.send();
 
+})
+
+app.post('/updateOpportunity' , async (req,res) => {
+    console.log('updating opp')
+    let data = req.body;
+
+    await DbController.updateOpportunity(data);
+    res.send();
 })
 
 app.get( '/summary',(req,res) => {

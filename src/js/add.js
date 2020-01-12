@@ -3,6 +3,7 @@ const bootstrap = require('bootstrap/dist/js/bootstrap.bundle.min');
 import '../assets/bootstrap.min.css';
 import image from '../assets/img/Praetura-Ventures-logo_white_rgb_small1.png';
 const inputController = require('./inputController');
+const uiController = require('./uicontroller');
 const mandatoryFields = inputController.mandatoryFields;
 //Get stage one fields
 const inputList = inputController.inputList[1];
@@ -49,8 +50,7 @@ async function checkMandatoryHandler(promise) {
     let ans = promise.then((data) => {
         return data
     })
-    console.log('await point')
-    console.log(ans)
+
 
     return ans
 }
@@ -62,13 +62,14 @@ async function checkMandatoryHandler(promise) {
 
 
 document.querySelector('#navbar-logo').src = image;
+uiController.loadEventListeners();
 
 inputController.generateHtmlInputs(inputArr)
 
 document.getElementById('add-btn').addEventListener('click',  async (e) => {
    // console.log(checkMandatoryHandler(checkMandatory()).then((ans) => {console.log(ans)}))
     if (await checkMandatoryHandler(checkMandatory()).then((ans) => {return ans})===true) {
-        console.log('true hit')
+
         let data = {};
         let inputs = document.querySelectorAll('input , select');
         inputs.forEach((input) => {
@@ -76,6 +77,7 @@ document.getElementById('add-btn').addEventListener('click',  async (e) => {
                 data[input.id] = null;
             } else {
                 data[input.id] = input.value;
+
             }
 
         })
@@ -86,15 +88,16 @@ document.getElementById('add-btn').addEventListener('click',  async (e) => {
             headers: {"Content-Type":'application/json'}
         }).then().catch((e) => {
             console.log(e);
+            alert(e);
 
         })
-        console.log('add href')
+
         let addBtn = document.getElementById('add-link');
-        addBtn.setAttribute('href','/summary')
+        addBtn.setAttribute('href','/html/summary.html')
         addBtn.click()
 
     } else {
-
+        alert('Something went wrong!')
     }
 })
 

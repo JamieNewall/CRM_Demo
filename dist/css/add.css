@@ -162,7 +162,7 @@
   margin-right: 1rem;
 }
 
-#bootstrap-override input[readonly], #bootstrap-override input[readonly]:focus{
+#bootstrap-override input[disabled], #bootstrap-override input[disabled]:focus{
   background-color:transparent;
 
   box-shadow: none;

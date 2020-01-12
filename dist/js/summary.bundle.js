@@ -150,7 +150,6 @@ function getState() {
 }
 
 function paginationHandler() {
-  //TODO need to finish back and next btns
   var paginationLinks = document.querySelectorAll('.added-pagination');
   paginationLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {
@@ -202,7 +201,6 @@ function paginationHandler() {
 }
 
 function addFilterEventListeners() {
-  console.log('addEvent listeners');
   var filters = document.querySelectorAll('select');
   filters.forEach(function (filter) {
     filter.addEventListener('change', function (e) {
@@ -226,15 +224,16 @@ function addFilterEventListeners() {
   document.querySelector('#search-input').addEventListener('keyup', function () {
     var tableEntries = document.querySelectorAll('.summary-row');
     var page = document.querySelector('.pagination li.active').textContent;
-    UIController.displayRows(page);
-    var testEntries = [];
-    tableEntries.forEach(function (entry) {
-      if (entry.style.display === 'table-row') {
-        testEntries.push(entry);
-      }
-    });
+    UIController.displayRows(page); //makes pagination strict
+    // let testEntries =[];
+    // tableEntries.forEach((entry) => {
+    //     if (entry.style.display === 'table-row') {
+    //         testEntries.push(entry)
+    //     }
+    // })
+
     var searchVal = document.querySelector('#search-input').value.toLowerCase();
-    testEntries.forEach(function (row) {
+    tableEntries.forEach(function (row) {
       if (row.textContent.toLowerCase().includes(searchVal)) {
         row.style.display = 'table-row';
       } else {
@@ -468,8 +467,7 @@ function () {
     key: "getStage",
     value: function getStage(opportunity) {
       return opportunity.stage;
-    } // sets PV circles on load
-
+    }
   }, {
     key: "getState",
     value: function getState() {}
@@ -485,8 +483,29 @@ function () {
     key: "setStageUiState",
     value: function setStageUiState(stage) {}
   }], [{
+    key: "proceedStage",
+    value: function proceedStage(nextStage) {
+      if (nextStage >= 8) {
+        return;
+      }
+
+      var container = document.getElementsByClassName('grid-container')[0];
+      var html = "<div class=\"pv-circle\"> \n      <span class=\"node-number\" id=\"circle-".concat(nextStage, "\">").concat(nextStage, "</span>    \n      </div>");
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = html;
+      container.appendChild(wrapper.firstChild);
+      container.children[container.children.length - 2].style.background = '#03ceab';
+      container.children[container.children.length - 1].style.background = '#008cf0';
+      UIController.loadEventListeners();
+    } // sets PV circles on load
+
+  }, {
     key: "setLoadState",
     value: function setLoadState(stage) {
+      // //
+      // if(stage === 0) {
+      //   stage = 1;
+      // }
       var container = document.getElementsByClassName('grid-container')[0]; // Set Grid
 
       if (stage <= 4) {
@@ -516,6 +535,11 @@ function () {
       });
       var fields = document.querySelectorAll('.field-set');
       fields.forEach(function (field) {
+        // set stage zero to 1
+        if (stage === 0) {
+          stage = 1;
+        }
+
         if (field.id === "stage-".concat(stage, "-fields")) {
           field.style.display = "grid";
         } else {
@@ -529,11 +553,11 @@ function () {
       var fieldSets = document.querySelectorAll('.field-set');
       fieldSets.forEach(function (field, index) {
         // console.log(field.id,index);
-        if (stage === 0) {
-          stage = 1;
-        }
+        //set stage to 1 if stage 0
+        var setStage = stage == 0 ? 1 : stage;
+        console.log(setStage);
 
-        if (field.id === "stage-".concat(stage, "-fields")) {
+        if (field.id === "stage-".concat(setStage, "-fields")) {
           field.style.display = "grid";
         } else {
           field.style.display = 'none';
