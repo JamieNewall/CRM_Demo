@@ -1,7 +1,6 @@
-// const rawData = require('./rawData');
 const path = require('path');
-const rawData = require(path.resolve(__dirname,'src','Praetura_Pipeline_App_V3','Personal Projects','Excel_Json_Extractor'));
-// console.log(rawData);
+const rawData = require(path.resolve(__dirname,'src','test','test','test'));
+
 const finalData = rawData.rawData[0];
 
 for (i in finalData) {

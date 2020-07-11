@@ -27,16 +27,10 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 
 
-// const val = DB.findAll().then((data) => data)
-// console.log(val);
-// app.get('', (req , res) => {
-//     console.log(req)
-// })
-
 app.get('/help', (req,res) => {
-    // res.sendFile(path.join(__dirname, '/dist','/html','summary.html'));
+    
     res.sendFile(path.join(__dirname, '/dist','/html','summary.html'));
-    // res.redirect('/html/add.html');
+    
 })
 
 app.get('/getData' , async function(req,res) {

@@ -3,7 +3,7 @@ const TableController = require('./tablecontroller.js');
 const UIController = require('./uicontroller');
 
 
-import image from "../assets/img/Praetura-Ventures-logo_white_rgb_small1.png";
+import image from "../assets/img/test.png";
 
 
 
@@ -118,13 +118,7 @@ function addFilterEventListeners() {
         let tableEntries = document.querySelectorAll('.summary-row');
         let page = document.querySelector('.pagination li.active').textContent;
         UIController.displayRows(page)
-        //makes pagination strict
-        // let testEntries =[];
-        // tableEntries.forEach((entry) => {
-        //     if (entry.style.display === 'table-row') {
-        //         testEntries.push(entry)
-        //     }
-        // })
+
         let searchVal = document.querySelector('#search-input').value.toLowerCase();
         tableEntries.forEach((row) => {
             if (row.textContent.toLowerCase().includes(searchVal)) {

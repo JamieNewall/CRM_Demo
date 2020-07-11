@@ -157,20 +157,6 @@ class UIController {
     }
   }
 
-  // static mobileMenuAnimation() {
-  //   let mobileMenu = document.querySelector('#mobile-menu');
-  //   console.log(mobileMenu.childNodes);
-  //
-  // }
-
-
-  addNumberNode(stage) {
-
-  }
-
-  setStageUiState(stage) {
-
-  }
 
   static buildSummaryTable(data) {
     document.querySelectorAll('.summary-row').forEach((row) => row.remove());

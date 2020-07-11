@@ -5,7 +5,7 @@ const inputController = require('./inputController');
 const moment = require("moment");
 const numeral = require("numeral");
 import '../assets/bootstrap.min.css';
-import image from '../assets/img/Praetura-Ventures-logo_white_rgb_small1.png';
+import image from '../assets/img/test.png';
 const typeMapping = {
     one_OppName:"STRING", opp_Status:"STRING" ,one_PvLead:"STRING",opp_CurrentStage:"INTEGER",one_IntroDate:"DATEONLY",one_Introducer:"STRING",one_Referrer:"STRING",one_InvestmentAmount:"INTEGER",one_PreMoney:"INTEGER",one_TotalInvestment:"INTEGER",one_EquityPercentage:"FLOAT",one_Location:"STRING",one_Sector:"STRING",one_InvestmentStage:"STRING",one_InvestmentToDate:"INTEGER",one_Activity:"STRING",one_TargetCustomers:"STRING",
     two_NdaSigned:"BOOLEAN", two_TeamMembers:"STRING",three_CompanyDescription:"MULTILINE",
@@ -17,7 +17,6 @@ const typeMapping = {
     four_PremoneyValuation: "INTEGER",
     four_TotalRoundAmount: "INTEGER",
     four_NonDilutedEquity: "FLOAT",
-    //TODO check that this should be a string
     four_FullyDilutedEquity: "STRING",
     four_PriorReturn:"BOOLEAN",
     four_expectedCompletionDate: "DATEONLY",
@@ -114,18 +113,10 @@ function initMultiSelect(people) {
     if (people === '') {
         return;
     } else if(/[;#\d]/.test(people)) {
-        //TODO to finish
+     
         let cleansed = people.replace(/[;#\d]/g,'')
-        console.log(cleansed);
-        // cleansed.forEach((person)=>{
-        //     options.forEach((option) => {
-        //         if (option.value === person) {
-        //             option.selected = true;
-        //         } else {
-        //             option.selected = false;
-        //         }
-        //     })
-        // })
+  
+
 
     }
 
@@ -147,8 +138,7 @@ function setButtonState(state) {
             <button type="button" id="reinstate-btn" class="btn">
             Reinstate Opportunity
         </button></a>`;
-        // let html = wrapper.childNodes;
-        // console.log(wrapper)
+        
         container.insertBefore(wrapper.firstChild,container.children[0])
     } else if (state === 'Declined') {
         document.getElementById('dropdownMenuButton').remove();
@@ -166,7 +156,7 @@ function populateInputs(data) {
             if(data[prop] < 1) {
                 data[prop] = (data[prop] * 100).toFixed(2);
             } else {
-            // console.log(data[prop], prop)
+      
             }
         } if(typeMapping[prop] === 'BOOLEAN') {
             if (data[prop] === 'Yes' || data[prop] === 'true' || data[prop] === 'yes') {
@@ -179,9 +169,9 @@ function populateInputs(data) {
         }
 
 
-        // console.log(typeof data[prop], data[prop] , prop)
+      
         let input = document.getElementById(prop)
-        // console.log(input, data[prop])
+      
         if ( input !== null) {
             input.value = data[prop];
         }
@@ -200,7 +190,7 @@ function moveToMonitor() {
         method: 'POST',
         body:JSON.stringify(data),
         headers: {"Content-Type": "application/json"}}).then(() => {
-        // UIController.setFields(nextStage);
+      
        hideModal();
        setButtonState('Monitor')
         let reinstate = document.getElementById('reinstate-btn');
@@ -224,7 +214,7 @@ function reinstateOpp() {
         method: 'POST',
         body:JSON.stringify(data),
         headers: {"Content-Type": "application/json"}}).then(() => {
-        // UIController.setFields(nextStage);
+   
 
         hideModal();
         location.reload();
@@ -245,7 +235,7 @@ function declineOpp() {
         method: 'POST',
         body:JSON.stringify(data),
         headers: {"Content-Type": "application/json"}}).then(() => {
-        // UIController.setFields(nextStage);
+      
         setButtonState('Declined')
         hideModal();
     })
@@ -260,16 +250,7 @@ function hideModal() {
     document.getElementById('decline-btn-no').click();
     document.getElementById('proceed-no-btn').click();
     disableFields();
-   // document.querySelectorAll('.modal').forEach((modal) => {
-   //     modal.style.display = 'none';
-   //     modal.className = 'modal fade';
-   //
-   // })
-   //  let backdrop = document.getElementsByClassName('modal-backdrop')[0]
-   //  backdrop.classList.remove('show');
-   //  backdrop.style.display = 'none';
-   //  document.querySelector('body').removeAttribute('class');
-   //  document.querySelector('body').removeAttribute('style');
+
    }
 
 function getCurrentStage() {
@@ -290,7 +271,7 @@ function proceedToNextStage() {
         method: 'POST',
         body:JSON.stringify(data),
         headers: {"Content-Type": "application/json"}}).then(() => {
-            // UIController.setFields(nextStage);
+          
             hideModal();
             UIController.setFields(nextStage);
             UIController.proceedStage(nextStage);
@@ -425,16 +406,5 @@ async function getInitData(){
 
 }
 
-
-
-
-
-
-// UIController.setLoadState(8);
-// UIController.setFields(8);
 getInitData()
-
-// document.getElementById('add-opp').addEventListener('click', () => {
-//     fetch('/summary').then(data => data.text()).then((data) => console.log(data)).catch(() => console.log('Something went wrong'))
-// })
 

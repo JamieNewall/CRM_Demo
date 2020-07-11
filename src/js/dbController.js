@@ -5,10 +5,6 @@ const DB = dataBase.opportunity;
 const moment = require('moment');
 const typeMapping = dataBase.typeMapping;
 
-
-// const data = require('../../util/getExcel.js');
-// console.log(data);
-
 class dbController {
     constructor() {
 
@@ -167,7 +163,7 @@ class dbController {
         console.log(opp)
         let data = DB.findAll({where: {one_OppName: opp}});
         return data;
-        // let data = DB.query('SELECT * FROM opportun')
+      
 
         }
 
@@ -259,15 +255,9 @@ class dbController {
                         if (data[key] == null || data[key] == 'Invalid date' ) {
                             opp[key] = null;
                         } else if (/\d{1,2}\/\d{1,2}\/\d{2,4}/.test(data[key])) {
-                            // let date;
-                            // if (moment(data[key], "DD-MM-YYYY") == 'Invalid date') {
-                            //     date = null;
-                            //     console.log('invalid date hit')
-                            // } else {
-                            //     date = moment(data[key], "DD-MM-YYYY")
-                            // }
+                 
                             opp[key] = moment(data[key], "DD-MM-YYYY")
-                            // opp[key] = date;
+                           
                         } else {
                             opp[key] = data[key]
                         }
@@ -288,17 +278,6 @@ class dbController {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports.dbController = dbController;

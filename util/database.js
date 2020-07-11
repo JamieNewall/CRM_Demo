@@ -1,28 +1,14 @@
 const Sequelize = require("sequelize");
-// const fs = require("fs");
 const moment = require("moment");
 const numeral = require("numeral");
 const dbController = require('../src/js/dbController');
 
-// const interimData = require("./getExcel");
-// const readyData = interimData.dataExport;
-
-
-// Establish connection and export
-// const sequelize = new Sequelize("PV_Pipeline", "postgres", "pass123", {
-//     // gimme postgres, please!
-//     dialect: "postgres",
-//     host: "localhost",
-//     logging: false
-//
-// })
-//Heroku connection
-const sequelize = new Sequelize("d5s0r8rfr24qro", "bndaxkydcmrbat", "ec398edaf3221d2fa68561b3353d30e234f93f62d09cf06100dba9181241c6cb", {
-    // gimme postgres, please!
+const sequelize = new Sequelize("test", "test", "test", {
+ 
     dialect: "postgres",
-    host: "ec2-54-247-85-251.eu-west-1.compute.amazonaws.com",
-    port: 5432,
-    // ssl:true
+    host: "test",
+    port: 4000,
+
     dialectOptions:{
         ssl:true
     }
@@ -164,25 +150,9 @@ const Opportunity = sequelize.define("opportunities", {
 }, {freezeTableName: true})
 
 
-
-// Creates DB
-//
-// Opportunity.sync();
-//
-// const Tester = sequelize.define("tester", {
-//     name:{type: Sequelize.STRING,allowNull:false, unique: true, primaryKey: true},
-//     date:{type: Sequelize.DATEONLY,allowNull:true},
-//     number:{type: Sequelize.DOUBLE,allowNull:false}
-// },{freezeTableName: true})
-// //
-// module.exports.sequelize = sequelize;
-// module.exports.Tester = Tester;
-
-
-
 //field mapping, anything not in here gets deleted
 const fieldMapping = {
-    SummaryName:"one_OppName", Status: "opp_Status",ReviewPraeturaLead:"one_PvLead", SummaryIntroductionDate:"one_IntroDate", SummaryIntroducerExternal:"one_Introducer", SummaryReferrer:"one_Referrer", SummaryInvestmentAmount:"one_InvestmentAmount", SummaryPreMoneyValuation:"one_PreMoney", SummaryTotalInvestmentAmount:"one_TotalInvestment", SummaryLocation:"one_Location", SummarySector:"one_Sector", SummaryInvestmentStage:"one_InvestmentStage", SummaryInvestment:"one_InvestmentToDate", SummaryCompanyActivity:"one_Activity", SummaryCompanyTargetCustomers:"one_TargetCustomers",
+    SummaryName:"one_OppName", Status: "opp_Status",ReviewLead:"one_PvLead", SummaryIntroductionDate:"one_IntroDate", SummaryIntroducerExternal:"one_Introducer", SummaryReferrer:"one_Referrer", SummaryInvestmentAmount:"one_InvestmentAmount", SummaryPreMoneyValuation:"one_PreMoney", SummaryTotalInvestmentAmount:"one_TotalInvestment", SummaryLocation:"one_Location", SummarySector:"one_Sector", SummaryInvestmentStage:"one_InvestmentStage", SummaryInvestment:"one_InvestmentToDate", SummaryCompanyActivity:"one_Activity", SummaryCompanyTargetCustomers:"one_TargetCustomers",
     SummaryEquity: "one_EquityPercentage", 
     ReviewNDASigned: "two_NdaSigned",
     ReviewTeam: "two_TeamMembers",
@@ -429,20 +399,6 @@ function remapData(obj) {
 
 }
 
-// readyData.forEach((obj) => {
-//
-//     remapData(obj);
-//     cleanseData(obj);
-//
-//
-//
-//
-//
-// });
-// console.log(readyData);
-
-
-
 function cleanseData(obj) {
     for (key in obj) {
         if (typeMapping[key] === "DATEONLY") {
@@ -475,7 +431,7 @@ function cleanseData(obj) {
                 obj[key] = (numeral(value).value() === null) ? null : numeral(value).value();
             }
         } else if (typeMapping[key] === "BOOLEAN") {
-            // console.log(`${obj[key]} is a radio button`);
+            
         } else if (typeMapping[key] === "MULTILINE") {
             if (obj[key] !== null){
                 let value = String(obj[key]);
@@ -494,11 +450,7 @@ function cleanseData(obj) {
     
 }
 
-//Populate DB
-// console.log(readyData.length)
-// dbController.dbController.populateDB(readyData, Opportunity);
 
-// module.exports.readyData = readyData;
 module.exports.opportunity = Opportunity;
 module.exports.typeMapping = typeMapping;
 

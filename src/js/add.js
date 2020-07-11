@@ -1,7 +1,7 @@
 import '../assets/style.css';
 const bootstrap = require('bootstrap/dist/js/bootstrap.bundle.min');
 import '../assets/bootstrap.min.css';
-import image from '../assets/img/Praetura-Ventures-logo_white_rgb_small1.png';
+import image from '../assets/img/test.png';
 const inputController = require('./inputController');
 const uiController = require('./uicontroller');
 const mandatoryFields = inputController.mandatoryFields;
@@ -55,19 +55,13 @@ async function checkMandatoryHandler(promise) {
     return ans
 }
 
-
-
-
-
-
-
 document.querySelector('#navbar-logo').src = image;
 uiController.loadEventListeners();
 
 inputController.generateHtmlInputs(inputArr)
 
 document.getElementById('add-btn').addEventListener('click',  async (e) => {
-   // console.log(checkMandatoryHandler(checkMandatory()).then((ans) => {console.log(ans)}))
+  
     if (await checkMandatoryHandler(checkMandatory()).then((ans) => {return ans})===true) {
 
         let data = {};

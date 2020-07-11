@@ -48,7 +48,7 @@ module.exports = {
         port: '63342',
 
         files: ['./dist/*.html'],
-        proxy: 'http://localhost:63342/Praetura_Pipeline_App_V3/dist/html/'
+        proxy: 'http://localhost:63342/test'
       })
     
 

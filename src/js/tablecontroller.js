@@ -1,7 +1,6 @@
 class TableController {
 
-  // adds event listeners and font awesome toggle
-  //TODO need to add logic to filter data
+
   static filterToggle() {
     let headers = document.querySelectorAll('.table-header');
     headers.forEach((header) => {

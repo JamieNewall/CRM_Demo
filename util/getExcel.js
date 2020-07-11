@@ -1,6 +1,6 @@
 const fs = require('fs');
 const excel = require('xlsx');
-const fileUrl = './excel_file/sharepoint_fields.xlsx';
+const fileUrl = './excel_file/fields.xlsx';
 
 
 
@@ -12,11 +12,7 @@ const worksheet = workbook.Sheets['Data_Dump'];
 
 function getJsDateFromExcel(excelDate) {
 
-    // JavaScript dates can be constructed by passing milliseconds
-    // since the Unix epoch (January 1, 1970) example: new Date(12312512312);
 
-    // 1. Subtract number of days between Jan 1, 1900 and Jan 1, 1970, plus 1 (Google "excel leap year bug")
-    // 2. Convert to milliseconds.
 
     const date = new Date((excelDate - (25567 + 2))*86400*1000);
     // return date;
@@ -69,20 +65,13 @@ function getDataFromSheet(startCol, startRow, endCol, endRow) {
 const data = getDataFromSheet(0,0,225,780);
 const dataExport = data;
 
-//Debugging
-// dataExport.forEach((obj) => {
-//     if(obj.SummaryName === "North Coders") {
-//     console.log(obj)
-//     }
-// })
 
-//Need to wrap in '' when copy across to database.js
 fs.writeFile('./interimData.txt', data, (err) => {
     if (err) throw err;
     console.log('file saved');
 })
 
-// console.log(dataExport);
+
 
 module.exports.dataExport = dataExport;
 
