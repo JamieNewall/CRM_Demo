@@ -28,7 +28,7 @@
     "numeral": "^2.0.6",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "xlsx": "^0.15.4"
+    "xlsx": "^0.17.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
